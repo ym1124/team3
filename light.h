@@ -3,22 +3,26 @@
 #include "vector.h"
 
 #define LIGHT_MARGINE_X 60
-#define LIGHT_MARGINE_Y 60
+#define LIGHT_MARGINE_Y 55
 
 class torch
 {
 public:
 	vector2 pos;
 	int torchAnimCnt;
+	bool isAlive;
 	static int torchGh;
 	torch(vector2 pos);
 	void drawTorch();
+	void setTorch();
+	void updateTorch();
 };
 
 class torchLight//トーチに灯すlight
 {
 public:
 	vector2 pos;
+	vector2 sway;
 	//トーチ自身の番号
 	int number;
 	bool isAlive;
@@ -33,6 +37,7 @@ public:
 	void moveLight();
 	void drawLight();
 	void updateLight();
+	void swayLight();
 };
 
 torchLight* getLightPointertes(int num);

@@ -14,7 +14,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ChangeWindowMode(true);
 
-	SetGraphMode(600, 400, 32);
+	SetGraphMode(800, 600, 32);
 
 	DxLib_Init();
 
