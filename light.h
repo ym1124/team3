@@ -1,22 +1,45 @@
 #pragma once
 #include "DxLib.h"
 #include "vector.h"
+#include "YSDBG.h"
 
 #define LIGHT_MARGINE_X 60
 #define LIGHT_MARGINE_Y 55
+ 
 
 class torch
 {
 public:
 	vector2 pos;
+	int number;
 	int torchAnimCnt;
 	bool isAlive;
-	static int torchGh;
+	static int fireGh,torchGh;
+	static int sumNumber;
 	torch(vector2 pos);
 	void drawTorch();
-	void setTorch();
+	void drawTorchAll();
+	virtual void setTorch();
 	void updateTorch();
 };
+
+class lanthanum
+{
+public:
+	vector2 pos;
+	int number;
+	int lanthanumAnimCnt;
+	bool isAlive;
+	static int fireGh, lanthanumGh;
+	static int sumNumber;
+	lanthanum(/*vector2 pos*/);
+	void drawLanthanum();
+	void drawLanthanumAll();
+	void moveLanthanum();
+	void updateLanthanum();
+};
+
+extern lanthanum lanthanum1;
 
 class torchLight//トーチに灯すlight
 {
@@ -34,13 +57,27 @@ public:
 	//引数付きコンストラクタで対象の松明を規定
 	torchLight(torch *t);
 	void initLight();
-	void moveLight();
-	void drawLight();
+	virtual void moveLight();
+	virtual void drawLight();
 	void updateLight();
 	void swayLight();
 };
 
-torchLight* getLightPointertes(int num);
+class playerLight :public torchLight
+{
+public:
+	int lanthanumGh;
+	lanthanum* l;
+	playerLight();
+	void moveLight();
+	void drawLight();
+};
 
 //template <typename T>
 //void setLight(T temp, light *lig)
+
+void moveLightTes();
+playerLight* getPlTorchPointerTes();
+torchLight* getLightPointertes(int num);
+void updateAllTorchLight();
+void drawAlltorch();

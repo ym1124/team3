@@ -34,7 +34,7 @@ void titleScene::drawTitle()
 	//static int a = LoadGraph("resource/image/haikei.png", true);
 	//DrawGraph(0, 0, a, true);
 	//後で消す
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "Lを押せハゲ！！！！");
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "Lを押してね！！！！");
 }
 
 void titleScene::initTitle()
@@ -44,6 +44,12 @@ void titleScene::initTitle()
 
 void titleScene::updateTitle()
 {
-	getLightPointertes(1)->updateLight();
-	getLightPointertes(2)->updateLight();
+	updateAllTorchLight();
+
+	drawAlltorch();
+
+	//lanthanum1.updateLanthanum();
+	/*getPlTorchPointerTes()->drawLight();
+	getPlTorchPointerTes()->moveLight();*/
+	getPlTorchPointerTes()->updateLight();
 }
