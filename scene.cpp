@@ -55,6 +55,7 @@ void titleScene::updateTitle()
 	if(a==0)
 	a = LoadGraph("resource/image/tempBack.png", true);
 	DrawGraph(0, 0, a, true);
+	//•‰æ–Ê•`‰æ
 	static int b;
 	if(b==0)
 	b = LoadGraph("resource/image/black.png");
@@ -71,4 +72,7 @@ void titleScene::updateTitle()
 	/*getPlTorchPointerTes()->drawLight();
 	getPlTorchPointerTes()->moveLight();*/
 	getPlTorchPointerTes()->updateLight();
+	testLanthanum1.setObject(vector2(100, 100));
+	testLanthanum1.update();
+	testLanthanum1.draw();
 }

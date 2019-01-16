@@ -81,7 +81,13 @@ float Player::getBodyPos(bool isX)
 
 void PlBody::Draw()
 {
-	DrawBox(pos.x - 16, pos.y - 64, pos.x + 16, pos.y, color.Blue, TRUE);
+	//‚¢‚¶‚è‚Ü‚µ‚½byYSD
+	static int test;
+	if (!test)
+		test = LoadGraph("resource/image/invader.png", false);
+	SetDrawBright(142, 142, 142);
+	DrawGraph(pos.x, pos.y, test, true);
+	SetDrawBright(255, 255, 255);
 }
 
 void PlSoul::Draw()

@@ -1,4 +1,6 @@
 #include "light.h"
+#include "OBJ2D.h"
+#include "gameObject.h"
 
 int torchLight::lightGh;
 int torch::fireGh, torch::torchGh;
@@ -166,7 +168,7 @@ void torchLight::drawLight()
 		//背景画像の描画//後で変える
 		static int a = LoadGraph("resource/image/tempBack.png", true);
 		DrawGraph(0, 0, a, true);
-		//bg.draw();
+		/*bg.draw();*/
 		//松明描画
 		t->drawTorchAll();
 		//プレイヤー松明
@@ -175,6 +177,8 @@ void torchLight::drawLight()
 		plLight.l->drawLanthanumAll();
 		//プレイヤー描画
 		pl.Draw();
+		//オブジェクトのランタン描画
+		testLanthanum1.draw();
 		//アルファブレンド設定
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA,155);
 		//円形画像を描画
@@ -258,8 +262,7 @@ void lanthanum::drawLanthanum()
 //ランタンの炎まで描画
 void lanthanum::drawLanthanumAll()
 {
-	lanthanumAnimCnt++;
-	DrawRectGraph(pos.x, pos.y, (lanthanumAnimCnt/12%15) * 100, 0, 100, 100, lanthanum::fireGh, true);
+	DrawRectGraph(pos.x, pos.y, (lanthanumAnimCnt/6%15) * 100, 0, 100, 100, lanthanum::fireGh, true);
 	drawLanthanum();
 }
 
@@ -273,6 +276,7 @@ void lanthanum::moveLanthanum()
 
 void lanthanum::updateLanthanum()
 {
+	lanthanumAnimCnt++;
 	drawLanthanumAll();
 	moveLanthanum();
 }

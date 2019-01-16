@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "light.h"
 #include "common.h"
+#include "gameObject.h"
 
 enum { TITLE, PLAY, OVER, CLEAR,TUTORIAL };
 class scene
