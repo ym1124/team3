@@ -1,6 +1,8 @@
 #pragma once
 #include "DxLib.h"
+#include "Player.h"
 #include "light.h"
+#include "common.h"
 
 enum { TITLE, PLAY, OVER, CLEAR,TUTORIAL };
 class scene

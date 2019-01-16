@@ -1,6 +1,8 @@
 #pragma once
 #include "scene.h"
 
+class Player;
+
 titleScene tsc;
 
 scene::scene(): nowscene(TITLE)
@@ -44,10 +46,27 @@ void titleScene::initTitle()
 
 void titleScene::updateTitle()
 {
+	//F’²’²®
+	/*bg.init();
+	bg.update();
+	bg.draw();*/
+	//γ‚Ε•Ο‚¦‚ι
+	static int a;
+	if(a==0)
+	a = LoadGraph("resource/image/tempBack.png", true);
+	DrawGraph(0, 0, a, true);
+	static int b;
+	if(b==0)
+	b = LoadGraph("resource/image/black.png");
+	//155‚ΕγY—ν‚Ι“―‰»‚·‚ι
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155);
+	DrawGraph(0, 0, b, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//
 	updateAllTorchLight();
-
+	pl.Draw();
+	pl.Update();
 	drawAlltorch();
-
 	//lanthanum1.updateLanthanum();
 	/*getPlTorchPointerTes()->drawLight();
 	getPlTorchPointerTes()->moveLight();*/

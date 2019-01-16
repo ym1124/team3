@@ -14,7 +14,6 @@ torchLight light1(&t1), light2(&t2), light3(&t3), light4(&t4), light5(&t5), ligh
 playerLight plLight;
 lanthanum lanthanum1;
 
-
 torch::torch(vector2 pos) :pos(pos), torchAnimCnt(0), isAlive(false)
 {
 	torch::sumNumber++;
@@ -30,10 +29,11 @@ void torch::setTorch()
 		torch::torchGh = LoadGraph("resource/image/torch.png", true);
 		onceFlg = true;
 	}
+}
 
-	/*if (!isAlive&&CheckHitKey(KEY_INPUT_L))
-		isAlive = true;*/
-
+void torch::hitCheck()
+{
+	//当たり判定
 	if (plLight.pos.x + 40 > pos.x + 40 && plLight.pos.x + 40 < pos.x + 55 && plLight.pos.y + 60 > pos.y + 50 && plLight.pos.y + 60 < pos.y + 70)
 		isAlive = true;
 }
@@ -63,7 +63,7 @@ void torch::drawTorchAll()
 void torch::updateTorch()
 {
 	setTorch();
-	//drawTorch();
+	hitCheck();
 }
 
 torchLight::torchLight(torch *t)
@@ -84,6 +84,44 @@ void torchLight::initLight()
 		//後で場所変える
 		torchLight::lightGh = LoadGraph("resource/image/lightcircle.png", true);
 		torchLight::setFlg = true;
+	}
+
+	//デバッグ用画像切り替え
+	if (CheckHitKey(KEY_INPUT_C))
+	{
+		static int i = 0;
+		for (i = 2; i < 11; i++)
+		{
+			if (key[i] == 1)
+				break;
+		}
+		switch (i)
+		{
+		case 2:
+			torchLight::lightGh = LoadGraph("resource/image/10.png", true);
+			break;
+		case 3:
+			torchLight::lightGh = LoadGraph("resource/image/20.png", true);
+			break;
+		case 4:
+			torchLight::lightGh = LoadGraph("resource/image/30.png", true);
+			break;
+		case 5:
+			torchLight::lightGh = LoadGraph("resource/image/40.png", true);
+			break;
+		case 6:
+			torchLight::lightGh = LoadGraph("resource/image/50.png", true);
+			break;
+		case 7:
+			torchLight::lightGh = LoadGraph("resource/image/60.png", true);
+			break;
+		case 8:
+			torchLight::lightGh = LoadGraph("resource/image/70.png", true);
+			break;
+		case 9:
+			torchLight::lightGh = LoadGraph("resource/image/80.png", true);
+			break;
+		}
 	}
 
 	if (!isAlive&&t->isAlive)
@@ -126,21 +164,25 @@ void torchLight::drawLight()
 		//描画範囲指定
 		SetDrawArea(t->pos.x - LIGHT_MARGINE_X, t->pos.y - LIGHT_MARGINE_Y, t->pos.x + 200 - LIGHT_MARGINE_X, t->pos.y + 200 - LIGHT_MARGINE_Y);
 		//背景画像の描画//後で変える
-		/*static int a = LoadGraph("resource/image/tempBack.png", true);
-		DrawGraph(0, 0, a, true);*/
-		bg.init();
-		bg.update();
-		bg.draw();
+		static int a = LoadGraph("resource/image/tempBack.png", true);
+		DrawGraph(0, 0, a, true);
+		//bg.draw();
 		//松明描画
 		t->drawTorchAll();
 		//プレイヤー松明
 		//plTorch.drawLight();
 		//プレイヤーランタン
 		plLight.l->drawLanthanumAll();
+		//プレイヤー描画
+		pl.Draw();
+		//アルファブレンド設定
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA,155);
 		//円形画像を描画
 		DrawGraph(t->pos.x - LIGHT_MARGINE_X + sway.x, t->pos.y - LIGHT_MARGINE_Y + sway.y, torchLight::lightGh, true);
+		//アルファブレンド設定
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		//輝度再設定
-		SetDrawBright(122, 122, 122);
+		//SetDrawBright(142, 132, 132);
 		//描画範囲設定解除
 		SetDrawAreaFull();
 	}
@@ -148,11 +190,13 @@ void torchLight::drawLight()
 
 void torchLight::updateLight()
 {
+	t->updateTorch();
 	initLight();
 	moveLight();
 	drawLight();
 }
 
+//コンストラクタ
 playerLight::playerLight() :torchLight(&t10)
 {
 	isAlive = true;
@@ -162,28 +206,9 @@ playerLight::playerLight() :torchLight(&t10)
 
 void playerLight::moveLight()
 {
-	//プレイヤーの炎移動
-	//プレイヤークラスとの兼ね合い
-	if (CheckHitKey(KEY_INPUT_RIGHT))
-	{
-		pos.x++;
-		l->pos.x++;
-	}
-	if (CheckHitKey(KEY_INPUT_LEFT))
-	{
-		pos.x--;
-		l->pos.x--;
-	}
-	if (CheckHitKey(KEY_INPUT_UP))
-	{
-		pos.y--;
-		l->pos.y--;
-	}
-	if (CheckHitKey(KEY_INPUT_DOWN))
-	{
-		pos.y++;
-		l->pos.y++;
-	}
+	//プレイヤーの炎移動//マージンで位置調整
+	pos.x = pl.getBodyPos(true);
+	pos.y = pl.getBodyPos(false);
 }
 
 void playerLight::drawLight()
@@ -191,14 +216,14 @@ void playerLight::drawLight()
 	if (isAlive)
 	{
 		//デバッグ用当たり判定ボックス
-		//DrawBox(pos.x + 40, pos.y + 60, pos.x + 45, pos.y + 65, GetColor(0, 0, 255), false);
+		DrawBox(pos.x + 40, pos.y + 60, pos.x + 45, pos.y + 65, GetColor(0, 0, 255), false);
 		//プレイヤー松明描画
 		/*DrawGraph(t->pos.x, t->pos.y, pTorchGh, true);*/
 		//t->drawTorchAll();
 		//ランタン部分描画
 		l->updateLanthanum();
 		//輝度再設定
-		SetDrawBright(122, 122, 122);
+		SetDrawBright(142, 142, 142);//いい感じになる(142,142,142)
 	}
 }
 
@@ -213,6 +238,8 @@ lanthanum::lanthanum(/*vector2 pos*/) /*:pos(pos)*/
 {
 	lanthanum::sumNumber++;
 	number = lanthanum::sumNumber;
+	pos.x=pl.getBodyPos(true);
+	pos.y = pl.getBodyPos(false);
 }
 
 //ランタン部分のみ描画
@@ -223,7 +250,6 @@ void lanthanum::drawLanthanum()
 	{
 		lanthanum::fireGh = LoadGraph("resource/image/lanthanumfire.png");
 		lanthanum::lanthanumGh = LoadGraph("resource/image/playerlanthanum.png");
-		pos = vector2(0, 0);
 		onceFlg = true;
 	}
 	DrawGraph(pos.x, pos.y, lanthanum::lanthanumGh, true);
@@ -240,22 +266,9 @@ void lanthanum::drawLanthanumAll()
 //ランタンの移動
 void lanthanum::moveLanthanum()
 {
-	/*if (CheckHitKey(KEY_INPUT_RIGHT))
-	{
-		pos.x++;
-	}
-	if (CheckHitKey(KEY_INPUT_LEFT))
-	{
-		pos.x--;
-	}
-	if (CheckHitKey(KEY_INPUT_UP))
-	{
-		pos.y--;
-	}
-	if (CheckHitKey(KEY_INPUT_DOWN))
-	{
-		pos.y++;
-	}*/
+	//プレイヤーポジション取得
+	pos.x = pl.getBodyPos(true);
+	pos.y = pl.getBodyPos(false);
 }
 
 void lanthanum::updateLanthanum()

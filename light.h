@@ -1,11 +1,12 @@
 #pragma once
 #include "DxLib.h"
+#include "common.h"
+#include "Player.h"
 #include "vector.h"
 #include "YSDBG.h"
 
 #define LIGHT_MARGINE_X 60
 #define LIGHT_MARGINE_Y 55
- 
 
 class torch
 {
@@ -21,6 +22,7 @@ public:
 	void drawTorchAll();
 	virtual void setTorch();
 	void updateTorch();
+	void hitCheck();
 };
 
 class lanthanum

@@ -10,11 +10,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 {
 
-	SetMainWindowText("reverse");
+	SetMainWindowText("test");
 
 	ChangeWindowMode(true);
 
-	SetGraphMode(800, 600, 32);
+	SetGraphMode(900, 700, 32);
 
 	DxLib_Init();
 
@@ -26,6 +26,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ClearDrawScreen();
 
 		sc.sceneManager();
+		InputKey();
 
 		ScreenFlip();
 	}
