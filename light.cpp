@@ -249,13 +249,6 @@ lanthanum::lanthanum(/*vector2 pos*/) /*:pos(pos)*/
 //ƒ‰ƒ“ƒ^ƒ“•”•ª‚Ì‚Ý•`‰æ
 void lanthanum::drawLanthanum()
 {
-	static bool onceFlg = false;
-	if (!onceFlg)
-	{
-		lanthanum::fireGh = LoadGraph("resource/image/lanthanumfire.png");
-		lanthanum::lanthanumGh = LoadGraph("resource/image/playerlanthanum.png");
-		onceFlg = true;
-	}
 	DrawGraph(pos.x, pos.y, lanthanum::lanthanumGh, true);
 }
 
@@ -276,6 +269,11 @@ void lanthanum::moveLanthanum()
 
 void lanthanum::updateLanthanum()
 {
+	if (!fireGh)
+	{
+		lanthanum::fireGh = LoadGraph("resource/image/lanthanumfire.png");
+		lanthanum::lanthanumGh = LoadGraph("resource/image/playerlanthanum.png");
+	}
 	lanthanumAnimCnt++;
 	drawLanthanumAll();
 	moveLanthanum();

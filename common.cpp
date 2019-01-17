@@ -122,6 +122,34 @@ void InputAllKey()//©¨ª«,escape‚ğÈ‚­
 	else keyall = 0;
 }
 
+int  checkHiddenCommand()
+{
+	static int state = 0;
+	switch (state)
+	{
+	case 0:
+		if (key[KEY_INPUT_C] == 1)
+			state++;
+		return state;
+		break;
+	case 1:
+		if (key[KEY_INPUT_C] == 1)
+			state++;
+		return state;
+		break;
+	case 2:
+		if (key[KEY_INPUT_C] == 1)
+			state++;
+		return state;
+		break;
+	default:
+		if (key[KEY_INPUT_C] == 1)
+			state = 0;
+		return state;
+		break;
+	}
+}
+
 double ToRadian(double deg)
 {
 	//return deg*atan(1.0) *4.0 / 180.0;

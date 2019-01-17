@@ -42,6 +42,7 @@ extern bool debugFlg;
 void InputKey();
 void InputJoypad();
 void InputAllKey();
+int checkHiddenCommand();
 double ToRadian(double deg);
 
 //--------------------------------

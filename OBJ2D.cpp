@@ -9,19 +9,22 @@ void OBJ2D::clear()
 {
 	texture = 0;
 	pos = vector2(0, 0);
-	setFlg = false;
 	mover = nullptr;
 }
 
 void OBJ2D::update()
 {
+	//関数ポインタに入力された関数の実行
 	mover(this);
 }
 
 void OBJ2D::draw()
 {
+	//画像が入っていれば描画
 	if (texture)
 		DrawGraph(pos.x, pos.y, texture, true);
+	//画像が入っていなければ停止
+	//assert(!texture);
 }
 
 void OBJ2D::setObject(vector2 pos)

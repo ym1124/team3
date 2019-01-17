@@ -13,7 +13,6 @@ class OBJ2D
 public:
 	vector2 pos;
 	int texture;
-	bool setFlg;
 
 	OBJ2D();
 	void clear();
@@ -24,16 +23,3 @@ public:
 };
 
 void testMove(OBJ2D *obj);
-
-//class OBJ2DManager
-//{
-//public:
-//	OBJ2D objs[5];
-//	void init();			// ‰Šúİ’è
-//	void update();			// XVˆ—
-//	void draw();			// •`‰æˆ—
-//
-//	OBJ2D* searchSet(MOVER mover, D3DXVECTOR2 pos);	// OBJ‚Ì’Ç‰Á
-////private:
-////	virtual int getSize() = 0;
-//}

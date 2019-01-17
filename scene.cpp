@@ -18,7 +18,7 @@ void scene::sceneManager()
 		doTitleScene();
 		break;
 	case PLAY:
-		//doPlayScene();
+		doPlayScene();
 		break;
 	}
 }
@@ -28,6 +28,13 @@ void scene::doTitleScene()
 	tsc.initTitle();
 	tsc.drawTitle();
 	tsc.updateTitle();
+}
+
+void scene::doPlayScene()
+{
+	//‚±‚Ì‡”Ô‚Å‚â‚é‚±‚Æ
+	pTitleInstance->drawTitle();
+	pTitleInstance->updateTitle();
 }
 
 void titleScene::drawTitle()
@@ -71,8 +78,11 @@ void titleScene::updateTitle()
 	//lanthanum1.updateLanthanum();
 	/*getPlTorchPointerTes()->drawLight();
 	getPlTorchPointerTes()->moveLight();*/
-	getPlTorchPointerTes()->updateLight();
 	testLanthanum1.setObject(vector2(100, 100));
+	getPlTorchPointerTes()->updateLight();
 	testLanthanum1.update();
 	testLanthanum1.draw();
+
+	if (key[KEY_INPUT_S] == 1)
+		sc.nowscene = PLAY;
 }
