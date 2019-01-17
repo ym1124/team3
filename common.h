@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _COMMON_H_
-#define	_COMMON_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,8 +16,8 @@
 //--------------------------------
 //	íËêî
 //--------------------------------
-#define SCREEN_WIDTH (1440)
-#define SCREEN_HEIGHT (810)
+#define SCREEN_WIDTH (1280)
+#define SCREEN_HEIGHT (720)
 
 
 struct Color
@@ -60,4 +58,3 @@ extern bool slow_flg;
 //#define ToRadian(x) FromDgreeToRadian(x)
 #define ToDegree(x) XMConvertToDegrees(x)
 
-#endif // !_COMMON_H_

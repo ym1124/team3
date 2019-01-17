@@ -3,7 +3,7 @@
 #include "common.h"
 #include "Player.h"
 #include "vector.h"
-#include "YSDBG.h"
+
 
 #define LIGHT_MARGINE_X 60
 #define LIGHT_MARGINE_Y 55
@@ -37,8 +37,8 @@ public:
 	lanthanum(/*vector2 pos*/);
 	void drawLanthanum();
 	void drawLanthanumAll();
-	void moveLanthanum();
-	void updateLanthanum();
+	void moveLanthanum(Player *pl);
+	void updateLanthanum(Player *pl);
 };
 
 extern lanthanum lanthanum1;
@@ -60,8 +60,8 @@ public:
 	torchLight(torch *t);
 	void initLight();
 	virtual void moveLight();
-	virtual void drawLight();
-	void updateLight();
+	virtual void drawLight(BGsystem*, Player*);
+	void updateLight(BGsystem*, Player*);
 	void swayLight();
 };
 
@@ -71,8 +71,8 @@ public:
 	int lanthanumGh;
 	lanthanum* l;
 	playerLight();
-	void moveLight();
-	void drawLight();
+	void moveLight(Player *pl);
+	void drawLight(Player *pl);
 };
 
 //template <typename T>
@@ -81,5 +81,5 @@ public:
 void moveLightTes();
 playerLight* getPlTorchPointerTes();
 torchLight* getLightPointertes(int num);
-void updateAllTorchLight();
+void updateAllTorchLight(BGsystem*, Player *pl);
 void drawAlltorch();

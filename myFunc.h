@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _MYFUNC_H_
 #define _MYFUNC_H_
 
@@ -23,6 +22,8 @@ class BaseObject
 {
 protected:
 	VECTOR2 pos;
+	VECTOR2 delta;
+	VECTOR2 old;
 	VECTOR2 speed;
 	VECTOR2 size;
 	VECTOR2 tex_size;
@@ -42,14 +43,14 @@ protected:
 	int alpha;
 public:
 	bool debug1;
-	bool debug2;
+	bool debug2;	
 	bool start;
 	bool damage;
 	char noHitTime;
 	RECT chara;
 	RECT atkBox[ATKBOX_MAX];
 	RECT hitBox;
-	virtual ~BaseObject() {}
+	virtual ~BaseObject(){}
 	virtual void reSetRect() {};
 	virtual void reSetData() {};
 	virtual void Init() {};
@@ -65,6 +66,11 @@ public:
 		if (isX)return pos.x;
 		else return pos.y;
 	}
+	virtual float getSpeed(bool isX)
+	{
+		if (isX)return speed.x;
+		else return speed.y;
+	}
 	virtual float getSize(bool isX)
 	{
 		if (isX)return size.x;
@@ -76,6 +82,22 @@ public:
 	virtual int getATK() { return atk; }
 	virtual void subHP(BaseObject *obj) {};
 	virtual char getForm() { return form; }
+	void setPosX(float x)
+	{
+		pos.x = x;
+	}
+	void setPosY(float y)
+	{
+		pos.y = y;
+	}
+	void setSpeedX(float x)
+	{
+		speed.x = x;
+	}
+	void setSpeedY(float y)
+	{
+		speed.y = y;
+	}
 };
 
 class BaseSkill
@@ -122,5 +144,21 @@ inline float clamp(float& v, const float& lo, const float& hi)
 
 	return v;
 }
+
+inline int wrap(const int v, const int lo, const int hi)
+{
+	assert(hi > lo);
+	const int n = (v - lo) % (hi - lo); // •‰”‚Ìè—]‚Íc++11‚©‚çŽg—p‰Â‚É‚È‚Á‚½
+	return n >= 0 ? (n + lo) : (n + hi);
+}
+
+// float”Å
+inline float wrap(const float v, const float lo, const float hi)
+{
+	assert(hi > lo);
+	const float n = std::fmod(v - lo, hi - lo);
+	return n >= 0 ? (n + lo) : (n + hi);
+}
+
 
 #endif

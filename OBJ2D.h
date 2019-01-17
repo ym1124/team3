@@ -2,7 +2,6 @@
 #include "DxLib.h"
 #include "common.h"
 #include "vector.h"
-
 #include "light.h"
 
 class OBJ2D;

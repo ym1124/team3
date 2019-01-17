@@ -142,6 +142,11 @@ int  checkHiddenCommand()
 			state++;
 		return state;
 		break;
+	case 3:
+		if (key[KEY_INPUT_C] == 1)
+			state++;
+		return state;
+		break;
 	default:
 		if (key[KEY_INPUT_C] == 1)
 			state = 0;

@@ -1,88 +1,72 @@
-#pragma once
+#include "DxLib.h"
+#include "common.h"
 #include "scene.h"
+#include "SceneTitle.h"
+#include "SceneGame.h"
 
-class Player;
 
-titleScene tsc;
+BaseScene *sceneManager::m_pScene = nullptr;
+bool sceneManager::start;
 
-scene::scene(): nowscene(TITLE)
+void sceneManager::changeScene(SCENE scene)
 {
+	if (m_pScene)
+	{
+		delete m_pScene;
+		start = true;
+	}
 
-}
-
-void scene::sceneManager()
-{
-	switch (nowscene)
+	switch (scene)
 	{
 	case TITLE:
-		doTitleScene();
+		m_pScene = new title();
 		break;
-	case PLAY:
-		doPlayScene();
+	case SCENE::GAME:
+		m_pScene = new SceneGame();
+		break;
+	case SCENE::RESULT:
+		//m_pScene = new ResultScene();
+		break;
+	default:
 		break;
 	}
 }
 
-void scene::doTitleScene()
+void sceneManager::Init()
 {
-	tsc.initTitle();
-	tsc.drawTitle();
-	tsc.updateTitle();
+	m_pScene->Init();
+}
+void sceneManager::unInit()
+{
+	m_pScene->unInit();
+}
+void sceneManager::Update()
+{
+	m_pScene->Update();
+}
+void sceneManager::Draw()
+{
+	m_pScene->Draw();
+	if (debugFlg)
+	{
+		m_pScene->Debug();
+	}
 }
 
-void scene::doPlayScene()
+void sceneManager::execute()
 {
-	//この順番でやること
-	pTitleInstance->drawTitle();
-	pTitleInstance->updateTitle();
-}
+	if (m_pScene == nullptr)return;
+	if (start)
+	{
+		Init();
+		start = false;
+	}
+	else
+	{
+		Update();
 
-void titleScene::drawTitle()
-{
-	//SetDrawBright(122, 122, 122);
-	//static int a = LoadGraph("resource/image/haikei.png", true);
-	//DrawGraph(0, 0, a, true);
-	//後で消す
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "Lを押してね！！！！");
-}
-
-void titleScene::initTitle()
-{
+		Draw();
+	}
 
 }
 
-void titleScene::updateTitle()
-{
-	//色調調整
-	/*bg.init();
-	bg.update();
-	bg.draw();*/
-	//後で変える
-	static int a;
-	if(a==0)
-	a = LoadGraph("resource/image/tempBack.png", true);
-	DrawGraph(0, 0, a, true);
-	//黒画面描画
-	static int b;
-	if(b==0)
-	b = LoadGraph("resource/image/black.png");
-	//155で綺麗に同化する
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155);
-	DrawGraph(0, 0, b, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	//
-	updateAllTorchLight();
-	pl.Draw();
-	pl.Update();
-	drawAlltorch();
-	//lanthanum1.updateLanthanum();
-	/*getPlTorchPointerTes()->drawLight();
-	getPlTorchPointerTes()->moveLight();*/
-	testLanthanum1.setObject(vector2(100, 100));
-	getPlTorchPointerTes()->updateLight();
-	testLanthanum1.update();
-	testLanthanum1.draw();
-
-	if (key[KEY_INPUT_S] == 1)
-		sc.nowscene = PLAY;
-}

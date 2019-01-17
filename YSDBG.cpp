@@ -15,8 +15,10 @@ bg.draw(); 置く。
 
 
 //UnresoledMergeConflict
+#pragma once
 #include"DxLib.h"
 #include "YSDBG.h"
+#include "common.h"
 #include "vector.h"
 #include <assert.h>
 ////////////////////////
@@ -25,14 +27,9 @@ bg.draw(); 置く。
 #define SCALE_BG (1.0f)//チップのスケール
 #define SCALE_BG_X SCALE_BG
 #define SCALE_BG_Y SCALE_BG
-#define CHIP_NUMX (20) //チップ配列の数x
-#define CHIP_NUMY (20) //チップ配列の数y
-#define CHIP_SIZE (64) //画像の1区切りの大きさ
-#define CHIP_DIV_X (10)//画像の区切りの数x
-#define CHIP_DIV_Y (10)//画像の区切りの数y
 //TODO スクリーンのサイズ確認
-#define SCREEN_WIDTH (600)
-#define SCREEN_HEIGHT (400)
+//#define SCREEN_WIDTH (600)
+//#define SCREEN_HEIGHT (400)
 
 const  vector2 WORLD_SIZE = vector2(CHIP_SIZE*SCALE_BG_X*CHIP_NUMX, CHIP_SIZE*SCALE_BG_Y*CHIP_NUMY);
 const  vector2 WINDOW_SIZE = vector2(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -40,7 +37,7 @@ const vector2 BG_SCALE(SCALE_BG_X, SCALE_BG_Y);
 ////////////////////////
 //	変数(実体)
 ////////////////////////
-BGsystem bg;
+//BGsystem bg;
 int chipHandle[CHIP_NUMX*CHIP_NUMY];
 
 vector2 camera_pos;	//world座標			//実際に画面に描画されるやつのあれ
@@ -59,29 +56,32 @@ void Draw_Physalis(int chipindex, int i, int j, vector2 scale);
 void DrawModiGraph_WrapedScale(const vector2 &pos, const vector2 &scale, const int &grHandle, const int &TransFlag);
 void CameraMove();
 //////////////////////////////////////////////////////////////////
+#define $	(51)
+
 int chip_data[CHIP_NUMX][CHIP_NUMY] =
 {
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0},//64*64
-	{0,0,0,13,14,15,16,17,18,19},
-	{0,0,0,23,24,25,26,27,28,29},
-	{0,0,0,33,34,35,36,37,38,39},
-	{0,0,0,0,0,0,0,0,48,49},
-	{0,0,0,0,0,0,0,0,58,59},
-	{0,0,0,0,0,0,0,0,68,69},
-	{0,0,72,73,74,75,76,77,78,79},
-	{0,0,82,83,84,85,86,87,88,89},
-	{0,0,92,93,94,95,96,97,98,99},//640,640
-	{1},
-	{1},
-	{1},
-	{1},
-	{1},
-	{1},
-	{1},
-	{1},
-	{1},
-	{1},
+	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0,0,0,0,0,0,0,0},//64*64
+	{0,0,0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0,0,0},
+	{ 0,0,0,0,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0 },
+	{ 0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0 },
+	{ 0,0,0,0,0,0,0,0,0,1,2,3,0,0,1,2,3,0,0,0 },
+	{ 1,2,2,2,2,2,2,2,2,2,2,3,0,0,0},
+	{ 0,0,0,0,0,0,0,0,0,0 },
+	{ 0,0,0,0,0,0,0,0,0,0 },
+	{0},
+	{0},
+	{0},
+	{0},
+	{0},
+	{0},
+	{0},
 };
+#undef $
 
 //int chip_data2[CHIP_NUMX][CHIP_NUMY] =
 //{
@@ -106,15 +106,9 @@ int chip_data[CHIP_NUMX][CHIP_NUMY] =
 ///////////////////////////////////////
 void BGsystem::init()
 {
-	static bool onceFlg = false;
 	camera_pos = vector2(0.0f, 0.0f);
-
-	if (!onceFlg)
-	{
-		LoadDivGraph("resource/image/mapChip.png",
-			CHIP_NUMX*CHIP_NUMY, CHIP_DIV_X, CHIP_DIV_Y, CHIP_SIZE, CHIP_SIZE, chipHandle);
-		onceFlg = true;
-	}
+	LoadDivGraph("resource/image/mapchip.png",
+		CHIP_NUMX*CHIP_NUMY, CHIP_DIV_X, CHIP_DIV_Y, CHIP_SIZE, CHIP_SIZE, chipHandle);
 
 	for (auto &it : chipHandle)
 	{
@@ -156,9 +150,11 @@ void BGsystem::update()
 ///////////////////////////////////////
 void BGsystem::draw()
 {
-	for (int i = 0; i < 10; i++)//y
+	static int backGh = LoadGraph("resource/image/gameBack.png", false);
+	DrawGraph(0, 0, backGh, true);
+	for (int i = 0; i < 20; i++)//y
 	{
-		for (int j = 0; j < 10; j++)//x
+		for (int j = 0; j < 20; j++)//x
 		{
 			int chipIndex;//チップインなんとかさん
 			chipIndex = chip_data[i][j];
@@ -171,17 +167,13 @@ void BGsystem::draw()
 			//if (suitti)
 			//	Draw_Zephyranthes(chipIndex, i, j);//初期
 				//else
+
 		}//_for
 	}//_for
-
-	//いじりましたbyYSD
-	static int black;
-	if (!black)
-		black = LoadGraph("resource/image/black.png", false);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155);
-	DrawGraph(0, 0, black, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
+
+
+
 
 
 ///////////////////////////////////////
@@ -252,8 +244,8 @@ void Draw_Zephyranthes(int chipindex, int i, int j)
 //マップチップの描画_試作2号機(サイサリス)
 void Draw_Physalis(int chipindex, int i, int j, vector2 scale)
 {
-	int tempHandle = chipHandle[chipindex];
-	DrawModiGraph_WrapedScale(vector2(CHIP_SIZE*scale.x * j - camera_pos.x, CHIP_SIZE*scale.y * i - camera_pos.y), scale, tempHandle, TRUE);
+	//int tempHandle = chipHandle[chipindex];
+	DrawModiGraph_WrapedScale(vector2(CHIP_SIZE*scale.x * j - camera_pos.x, CHIP_SIZE*scale.y * i - camera_pos.y), scale, chipHandle[chipindex], TRUE);
 }
 
 
@@ -270,3 +262,10 @@ void DrawModiGraph_WrapedScale(const vector2 &pos, const vector2 &scale, const i
 	DrawModiGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), static_cast<int>(posRT.x), static_cast<int>(posRT.y),
 		static_cast<int>(posRB.x), static_cast<int>(posRB.y), static_cast<int>(posLB.x), static_cast<int>(posLB.y), grHandle, TransFlag);
 }
+
+
+
+
+
+
+;;;;;;;;;

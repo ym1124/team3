@@ -1,12 +1,14 @@
 #include "DxLib.h"
 #include "common.h"
 #include "Player.h"
+#include "Collision.h"
+
 
 #define PL_INIT_X	(100)
-#define PL_INIT_Y	(300)
+#define PL_INIT_Y	(600)
 
 char controlPL = PLcon::BODY;
-Player pl;
+Player player;
 
 Player::Player()
 {
@@ -14,6 +16,13 @@ Player::Player()
 
 	pl_S = new PlSoul();
 
+}
+
+void Player::Init()
+{
+	pl_b->Init();
+
+	pl_S->Init();
 }
 
 void Player::Update()
@@ -43,21 +52,87 @@ void PlBody::Update()
 {
 	Gravity();
 
-	if (controlPL != 0)return;
+	if (delta.y < 0)
+	{
+		if (isFloor(pos.x, pos.y, 15))
+		{
+			mapHoseiDown(this);
+			onGround = true;
+		}
+	}
+	if (delta.y > 0)
+	{
+		if (isCeiling(pos.x, pos.y - 50, 15))
+		{
+			mapHoseiUp(this);
+			jumpTimer = 0;
+		}
+	}
 
-	Jump();
+	if (controlPL == 0)Move();
 
-	Move();
+	if (delta.x > 0)
+	{
+		if (isWall(pos.x + 15, pos.y, 50))
+		{
+			mapHoseiRight(this);
+		}
+	}
+	if (delta.x < 0)
+	{
+		if (isWall(pos.x - 15, pos.y, 50))
+		{
+			mapHoseiLeft(this);
+		}
+	}
+
+	if (controlPL == 0)Jump();
+	
+
+	DrawUpdate();
 }
 
 void PlSoul::Update()
 {
+	if (delta.y < 0)
+	{
+		if (isFloor(pos.x, pos.y, 15))
+		{
+			mapHoseiDown(this);
+			onGround = true;
+		}
+	}
+	if (delta.y > 0)
+	{
+		if (isCeiling(pos.x, pos.y - 50, 15))
+		{
+			mapHoseiUp(this);
+			jumpTimer = 0;
+		}
+	}
+	if (delta.x > 0)
+	{
+		if (isWall(pos.x + 15, pos.y, 50))
+		{
+			mapHoseiRight(this);
+		}
+	}
+	if (delta.x < 0)
+	{
+		if (isWall(pos.x - 15, pos.y, 50))
+		{
+ 			mapHoseiLeft(this);
+		}
+	}
 
-	Gravity();
+
+	Move();
 
 	Jump();
 
-	Move();
+	Gravity();
+
+	DrawUpdate();
 }
 
 void Player::Draw()
@@ -66,28 +141,10 @@ void Player::Draw()
 
 	pl_S->Draw();
 }
-
-float Player::getBodyPos(bool isX)
-{
-	if (pl_b != nullptr)
-	{
-		return pl_b->getPos(isX);
-	}
-	else
-	{
-		return 0;
-	}
-}
-
 void PlBody::Draw()
 {
-	//いじりましたbyYSD
-	static int test;
-	if (!test)
-		test = LoadGraph("resource/image/invader.png", false);
-	SetDrawBright(142, 142, 142);
-	DrawGraph(pos.x, pos.y, test, true);
-	SetDrawBright(255, 255, 255);
+	DrawBox(pos.x - 16, pos.y - 64, pos.x + 16, pos.y, color.Blue, TRUE);
+	DrawRectGraphF(pos.x - 32, pos.y - 64, 64*aFrame, 64* aLine, 64, 64, pl_Gr, TRUE);
 }
 
 void PlSoul::Draw()
@@ -98,10 +155,12 @@ void PlSoul::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 60);
 }
 
+
 void PlBase::Debug()
 {
 
 }
+
 
 PlBody::PlBody()
 {
@@ -109,13 +168,16 @@ PlBody::PlBody()
 	pos.y = PL_INIT_Y;
 	speed.x = 0.0f;
 	speed.y = 0.0f;
-	size.x = 0.0f;
-	size.y = 0.0f;
+	size.x = 15.0f;
+	size.y = 50.0f;
 	tex_size.x = 0.0f;
 	tex_size.y = 0.0f;
 	this->form = form;
 	onGround = false;
 	jumpTimer = 0;
+	aCnt = 0;
+	aFrame = 0;
+	aLine = 0;
 }
 
 PlSoul::PlSoul()
@@ -124,19 +186,22 @@ PlSoul::PlSoul()
 	pos.y = PL_INIT_Y;
 	speed.x = 0.0f;
 	speed.y = 0.0f;
-	size.x = 0.0f;
-	size.y = 0.0f;
+	size.x = 15.0f;
+	size.y = 50.0f;
 	tex_size.x = 0.0f;
 	tex_size.y = 0.0f;
 	this->form = form;
 	onGround = false;
 	jumpTimer = 0;
 	Reflg = false;
+	aCnt = 0;
+	aFrame = 0;
+	aLine = 0;
 }
 
 void PlBase::Init()
 {
-
+	pl_Gr = LoadGraph("resource/image/player.png");
 }
 
 void PlBase::unInit()
@@ -162,7 +227,52 @@ PlBase::~PlBase()
 
 void PlBase::DrawUpdate()
 {
+	static char prev = 0;
+	aLine = 0;
+	if (speed.x != 0)
+	{
+		aLine = 1;
+	}
 
+	//アニメーションカウント
+	if (aLine != prev)
+	{
+		aCnt = 0;
+		aFrame = 0;
+	}
+	prev = aLine;
+	aCnt++;
+	if (aCnt > 120)
+	{
+		aCnt = 0;
+	}
+
+	switch (aLine)
+	{
+	case 0:
+		if (aCnt % 12 == 0)
+		{
+			aFrame++;
+			if (aFrame >= 3)
+			{
+				aFrame = 0;
+			}
+		}
+		break;
+	case 1:
+		if (aCnt % 14 == 0)
+		{
+			aFrame++;
+			if (aFrame >= 6)
+			{
+				aFrame = 0;
+			}
+		}
+		break;
+	case 2:
+	default:
+		break;
+	}
 }
 
 void PlBase::RectUpdate()
@@ -176,7 +286,7 @@ void PlBase::Move()
 	static constexpr float SPEED_MAX_X = 7.0f;
 
 
-	//??“?????
+	//移動処理
 	if (key[KEY_INPUT_LEFT])
 	{
 		if (speed.x > 0)
@@ -199,16 +309,16 @@ void PlBase::Move()
 	}
 
 	clamp(speed.x, -SPEED_MAX_X, SPEED_MAX_X);
+	old.x = pos.x;
 	pos.x += speed.x;
-	pos.y += speed.y;
-
+	delta.x = pos.x - old.x;
 }
 
 void PlBase::Gravity()
 {
-	static constexpr float SPEED_MAX_Y = 8.0f;
-	static constexpr float GRAVITY = 0.5f;
-	static constexpr float GROUND_POS = 300.0f;
+	static constexpr float SPEED_MAX_Y = 12.0f;
+	static constexpr float GRAVITY = 0.7f;
+	//static constexpr float GROUND_POS = 700.0f;
 
 	onGround = false;
 	speed.y += GRAVITY;
@@ -216,26 +326,26 @@ void PlBase::Gravity()
 	{
 		speed.y = SPEED_MAX_Y;
 	}
-	//oldY = pos.y;
+	old.y = pos.y;
 	pos.y += speed.y;
-	//deltaY = oldY - pos.y;
+	delta.y = old.y - pos.y;
 
-	if (pos.y > GROUND_POS)
-	{
-		onGround = true;
-		pos.y = GROUND_POS;
-	}
+	//if (pos.y > GROUND_POS)
+	//{
+	//	onGround = true;
+	//	pos.y = GROUND_POS;
+	//}
 }
 
 void PlBase::Jump()
 {
-	static constexpr float JUMP_SPEED_Y = -6.0f;
+	static constexpr float JUMP_SPEED_Y = -10.0f;
 
 	if (onGround)
 	{
 		if (key[KEY_INPUT_SPACE] == 1)
 		{
-			jumpTimer = 12;
+  			jumpTimer = 12;
 		}
 	}
 

@@ -1,28 +1,63 @@
-#pragma once
-#include "DxLib.h"
-#include "Player.h"
-#include "light.h"
-#include "common.h"
-#include "gameObject.h"
-#include "title.h"
+#ifndef _SCENE_H_
+#define _SCENE_H_
 
-enum { TITLE, PLAY, OVER, CLEAR,TUTORIAL };
-class scene
+
+class BaseScene
 {
+protected:
+	int timer;
+	int state;
 public:
-	int nowscene;
-	scene();
-	void sceneManager();
-	void doTitleScene();
-	void doPlayScene();
+	BaseScene()
+	{
+		timer = 0;
+		state = 0;
+	}
+	virtual ~BaseScene(){}
+	virtual void Init()
+	{
+		timer = 0;
+		state = 0;
+	}
+	virtual void Update() {};
+	virtual void Draw() {};
+	virtual void unInit() {};
+	virtual void Debug() {};
 };
 
-extern scene sc;
-
-class titleScene
+class sceneManager
 {
 public:
-	void initTitle();
-	void drawTitle();
-	void updateTitle();
+	enum SCENE
+	{
+		TITLE = 0,//タイトルシーン
+		GAME,		//ゲームシーン
+		RESULT,
+	};
+
+	sceneManager()
+	{
+		start = true;
+	}
+
+	~sceneManager()
+	{
+		delete m_pScene;
+	}
+
+	static void changeScene(SCENE scene);
+	static void Init();
+	static void unInit();
+	static void Update();
+	static void Draw();
+	static void execute();
+
+private:
+	static BaseScene* m_pScene;
+	static bool start;
+
 };
+
+
+
+#endif

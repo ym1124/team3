@@ -1,6 +1,6 @@
 #pragma once
-#pragma once
 #include "myFunc.h"
+#include "YSDBG.h"
 
 class PlBase : public BaseObject
 {
@@ -9,7 +9,7 @@ public:
 	virtual ~PlBase();
 	void reSetRect();
 	void reSetData();
-	void Init();
+	virtual void Init();
 	void unInit();
 	void DrawUpdate();
 	void RectUpdate();
@@ -19,6 +19,8 @@ public:
 	void Gravity();
 	void Move();
 
+protected:
+	int pl_Gr;
 };
 
 class PlBody : public PlBase
@@ -27,7 +29,7 @@ public:
 	PlBody();
 	void Update();
 	void Draw();
-};
+}; 
 
 class PlSoul : public PlBase
 {
@@ -46,14 +48,14 @@ public:
 	Player();
 	void Update();
 	void Draw();
-	float getBodyPos(bool isX);
+	void Init();
+	Player* getPlayerPointer() { return this; }
 
-private:
 	PlBody *pl_b;
 	PlSoul *pl_S;
 };
 
-extern Player pl;
+extern Player player;
 
 enum PLcon
 {

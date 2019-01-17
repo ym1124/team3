@@ -26,4 +26,4 @@ vector2 vector2::operator*(const int&value)
 
 vector2::vector2() {}
 
-vector2::vector2(float a,float b):x(a),y(b){}
+vector2::vector2(float a, float b) :x(a), y(b) {}
