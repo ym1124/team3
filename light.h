@@ -3,6 +3,8 @@
 #include "common.h"
 #include "Player.h"
 #include "vector.h"
+#include "YSDBG.h"
+#include "scene.h"
 
 
 #define LIGHT_MARGINE_X 60
@@ -15,7 +17,7 @@ public:
 	int number;
 	int torchAnimCnt;
 	bool isAlive;
-	static int fireGh,torchGh;
+	static int fireGh, torchGh,sound;
 	static int sumNumber;
 	torch(vector2 pos);
 	void drawTorch();
@@ -35,6 +37,7 @@ public:
 	static int fireGh, lanthanumGh;
 	static int sumNumber;
 	lanthanum(/*vector2 pos*/);
+	static void initLanthanum();
 	void drawLanthanum();
 	void drawLanthanumAll();
 	void moveLanthanum(Player *pl);

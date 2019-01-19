@@ -2,7 +2,7 @@
 
 #include "scene.h"
 #include "Player.h"
-
+#include "YSDBG.h"
 
 class SceneGame : public BaseScene
 {
@@ -15,7 +15,7 @@ public:
 	void Draw();
 	void Debug();
 
-public:
+private:
 	BGsystem *bg;
 	Player *pl;
 };

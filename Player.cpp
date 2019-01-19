@@ -1,7 +1,9 @@
 #include "DxLib.h"
 #include "common.h"
+#include "vector.h"
 #include "Player.h"
 #include "Collision.h"
+#include "YSDBG.h"
 
 
 #define PL_INIT_X	(100)
@@ -27,13 +29,31 @@ void Player::Init()
 
 void Player::Update()
 {
+	
+
+	if (pl_S->soultime < 0)
+	{
+		pl_S->soultime = 0;
+		pl_S->Reflg = true;
+	}
+	if (controlPL == PLcon::SOUL)pl_S->soultime--;
+
 	if (key[KEY_INPUT_Z] == 1)
 	{
 		switch (controlPL)
 		{
 		case PLcon::BODY: controlPL = PLcon::SOUL;
+			pl_S->jumpflg = true;
+			pl_S->soultime = 300;
 			break;
-		case PLcon::SOUL: pl_S->Reflg = true;
+		case PLcon::SOUL:
+		if (fabs(pl_b->getPos(true) - pl_S->getPos(true) < 50))
+		{
+			if (fabs(pl_b->getPos(false) - pl_S->getPos(false) <50))
+			{
+				pl_S->Reflg = true;
+			}
+		}
 			break;
 		case 2:
 			break;
@@ -94,6 +114,8 @@ void PlBody::Update()
 
 void PlSoul::Update()
 {
+	Gravity();
+
 	if (delta.y < 0)
 	{
 		if (isFloor(pos.x, pos.y, 15))
@@ -110,6 +132,10 @@ void PlSoul::Update()
 			jumpTimer = 0;
 		}
 	}
+
+
+	Move();
+
 	if (delta.x > 0)
 	{
 		if (isWall(pos.x + 15, pos.y, 50))
@@ -121,16 +147,12 @@ void PlSoul::Update()
 	{
 		if (isWall(pos.x - 15, pos.y, 50))
 		{
- 			mapHoseiLeft(this);
+			mapHoseiLeft(this);
 		}
 	}
 
-
-	Move();
-
-	Jump();
-
-	Gravity();
+	if (controlPL == 0)Jump();
+	CameraMove(vector2(pos.x, pos.y));
 
 	DrawUpdate();
 }
@@ -143,15 +165,14 @@ void Player::Draw()
 }
 void PlBody::Draw()
 {
-	DrawBox(pos.x - 16, pos.y - 64, pos.x + 16, pos.y, color.Blue, TRUE);
-	DrawRectGraphF(pos.x - 32, pos.y - 64, 64*aFrame, 64* aLine, 64, 64, pl_Gr, TRUE);
+	DrawRectGraphF(pos.x - 32 - camera_pos.x, pos.y - 64 - camera_pos.y, 64 * aFrame, 64 * aLine, 64, 64, pl_Gr, TRUE, isFlipX);
 }
 
 void PlSoul::Draw()
 {
 	if (controlPL != PLcon::SOUL)return;
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 60);
-	DrawBox(pos.x - 16, pos.y - 64, pos.x + 16, pos.y, color.Blue, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
+	DrawRectGraphF(pos.x - 32 - camera_pos.x, pos.y - 64 - camera_pos.y, 64 * aFrame, 64 * aLine, 64, 64, pl_Gr, TRUE, isFlipX);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 60);
 }
 
@@ -172,6 +193,7 @@ PlBody::PlBody()
 	size.y = 50.0f;
 	tex_size.x = 0.0f;
 	tex_size.y = 0.0f;
+	isFlipX = false;
 	this->form = form;
 	onGround = false;
 	jumpTimer = 0;
@@ -190,9 +212,11 @@ PlSoul::PlSoul()
 	size.y = 50.0f;
 	tex_size.x = 0.0f;
 	tex_size.y = 0.0f;
+	isFlipX = false;
 	this->form = form;
 	onGround = false;
 	jumpTimer = 0;
+	jumpflg = false;
 	Reflg = false;
 	aCnt = 0;
 	aFrame = 0;
@@ -308,6 +332,8 @@ void PlBase::Move()
 		speed.x = 0;
 	}
 
+	if (speed.x > 0)isFlipX = false;
+	else if (speed.x < 0)isFlipX = true;
 	clamp(speed.x, -SPEED_MAX_X, SPEED_MAX_X);
 	old.x = pos.x;
 	pos.x += speed.x;
@@ -341,11 +367,12 @@ void PlBase::Jump()
 {
 	static constexpr float JUMP_SPEED_Y = -10.0f;
 
-	if (onGround)
+	if (onGround || jumpflg)
 	{
 		if (key[KEY_INPUT_SPACE] == 1)
 		{
   			jumpTimer = 12;
+			jumpflg = false;
 		}
 	}
 
@@ -387,6 +414,23 @@ void PlSoul::Return(PlBase *body)
 			pos.x = body->getPos(true);
 			Reflg = false;
 			controlPL = PLcon::BODY;
+		}
+	}
+
+	if (body->getPos(false) < pos.y)
+	{
+		pos.y *= 0.95f;
+		if (body->getPos(false) >= pos.y)
+		{
+			pos.y = body->getPos(false);
+		}
+	}
+	else
+	{
+		pos.y *= 1.05f;
+		if (body->getPos(false) < pos.y)
+		{
+			pos.y = body->getPos(false);
 		}
 	}
 }

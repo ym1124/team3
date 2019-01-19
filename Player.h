@@ -1,6 +1,6 @@
 #pragma once
 #include "myFunc.h"
-#include "YSDBG.h"
+
 
 class PlBase : public BaseObject
 {
@@ -19,6 +19,7 @@ public:
 	void Gravity();
 	void Move();
 
+	bool jumpflg;
 protected:
 	int pl_Gr;
 };
@@ -40,6 +41,7 @@ public:
 	void Return(PlBase * body);
 
 	bool Reflg;
+	int soultime;
 };
 
 class Player
@@ -49,7 +51,6 @@ public:
 	void Update();
 	void Draw();
 	void Init();
-	Player* getPlayerPointer() { return this; }
 
 	PlBody *pl_b;
 	PlSoul *pl_S;

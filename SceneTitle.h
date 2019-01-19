@@ -25,7 +25,8 @@ public:
 	vector2 bPos1, bPos2;//背景の位置
 	vector2 pPos, lPos, fPos;//プレイヤー、ランタン、炎の位置
 	int animCnt;
-	bool startFlg;
+	float speed;
+	bool startFlg, soundFlg;
 	title();
 	void Init();
 	void unInit() {};
@@ -37,6 +38,7 @@ public:
 	//void drawTitle();
 	//void updateTitle();
 	void pushStartButton();
+	void changeSpeed();
 };
 
 //タイトルのインスタンスのポインタを返す

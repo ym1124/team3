@@ -125,6 +125,8 @@ void InputAllKey()//©¨ª«,escape‚ğÈ‚­
 int  checkHiddenCommand()
 {
 	static int state = 0;
+	if (key[KEY_INPUT_Y] > 2 && key[KEY_INPUT_S] > 2 && key[KEY_INPUT_D] > 2)
+		state = 5;
 	switch (state)
 	{
 	case 0:
@@ -138,11 +140,6 @@ int  checkHiddenCommand()
 		return state;
 		break;
 	case 2:
-		if (key[KEY_INPUT_C] == 1)
-			state++;
-		return state;
-		break;
-	case 3:
 		if (key[KEY_INPUT_C] == 1)
 			state++;
 		return state;

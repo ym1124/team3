@@ -3,7 +3,7 @@
 #include "myFunc.h"
 #include <assert.h>
 
-int getData(int map[CHIP_NUMX][CHIP_NUMY], float x, float y)
+int getData(int map[CHIP_NUMY][CHIP_NUMX], float x, float y)
 {
 	int divX = static_cast<int>(x) >> 6;      // x方向のインデックス
 	int divY = static_cast<int>(y) >> 6;      // y方向のインデックス
@@ -15,7 +15,7 @@ int getTerrainAttr(float x, float y)
 	int index = getData(chip_data, x, y);
 
 	// インデックスが-1であればTR_NONEを返す
-	if (index < 0) return -1;
+	if (index < 0||index>CHIP_DIV_X*CHIP_DIV_Y) return -1;
 
 	// x方向のインデックス
 	int remX = index % CHIP_DIV_X;

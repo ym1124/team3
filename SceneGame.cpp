@@ -1,3 +1,5 @@
+
+
 #include "DxLib.h"
 #include "common.h"
 #include "SceneGame.h"
@@ -10,9 +12,9 @@ void SceneGame::Update()
 
 	bg->update();
 
-	updateAllTorchLight(bg,pl);
-	getPlTorchPointerTes()->updateLight(bg,pl);
-	testLanthanum1.update();
+	updateAllTorchLight(bg, pl);
+	getPlTorchPointerTes()->updateLight(bg, pl);
+	LanthanumsUpdate();
 }
 
 void SceneGame::Draw()
@@ -37,16 +39,17 @@ void SceneGame::Draw()
 	getPlTorchPointerTes()->moveLight(pl);
 	getPlTorchPointerTes()->t->updateTorch();
 	getPlTorchPointerTes()->drawLight(pl);
-	testLanthanum1.draw();
-	updateAllTorchLight(bg,pl);
+	updateAllTorchLight(bg, pl);
+	LanthanumsDraw();
 }
 
 SceneGame::SceneGame()
 {
 	pl = new Player();
 	bg = new BGsystem();
-	
-	testLanthanum1.setObject(vector2(100, 100));
+
+	lanthanum::initLanthanum();
+	LanthanumsSetObject();
 	getPlTorchPointerTes()->initLight();
 }
 

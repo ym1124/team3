@@ -1,6 +1,6 @@
 #include "OBJ2D.h"
 
-OBJ2D::OBJ2D()
+OBJ2D::OBJ2D():animator()
 {
 	clear();
 }
@@ -18,27 +18,42 @@ void OBJ2D::update()
 	mover(this);
 }
 
-void OBJ2D::draw()
-{
-	//画像が入っていれば描画
-	if (texture)
-		DrawGraph(pos.x, pos.y, texture, true);
-	//画像が入っていなければ停止
-	//assert(!texture);
-}
-
 void OBJ2D::setObject(vector2 pos)
 {
 }
 
-void testMove(OBJ2D *obj)
+animator::animator()
 {
-	if (key[KEY_INPUT_RIGHT]  >1)
-		obj->pos.x++;
-	if (key[KEY_INPUT_LEFT] > 1)
-		obj->pos.x--;
-	if (key[KEY_INPUT_UP] >1)
-		obj->pos.y--;
-	if (key[KEY_INPUT_DOWN] >1)
-		obj->pos.y++;
+	texture = 0;
+}
+
+void animator::setTextureInfo(int sheetsNum, int speed, int srcX, int srcY, int sizeX, int sizeY)
+{
+	this->sheetsNum = sheetsNum;
+	this->speed = speed;
+	this->srcX = srcX;
+	this->srcY = srcY;
+	this->sizeX = sizeX;
+	this->sizeY = sizeY;
+}
+
+void animator::draw(bool animationFlg)
+{
+	//画像が入っていれば描画(アニメーション無し)
+	if (!animationFlg)
+	{
+		if (texture)
+			DrawGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, texture, true);
+	}
+	//画像が入っていれば描画(アニメーション有り)
+	if (animationFlg)
+	{
+		if (texture)
+		{
+			animCnt++;
+			DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, srcX + (animCnt / speed%sheetsNum*sizeX), srcY, sizeX, sizeY, texture, true);
+		}
+	}
+	//画像が入っていなければ停止
+	//assert(!texture);
 }
