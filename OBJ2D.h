@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "common.h"
 #include "vector.h"
+#include "template.h"
 
 #include "light.h"
 
@@ -12,7 +13,7 @@ class animator
 {
 public:
 	vector2 pos;
-	int texture;
+	int *texture;//“Ç‚İ‚ñ‚Å‚ ‚é‰æ‘œ‚Ìƒ|ƒCƒ“ƒ^
 	int animCnt;
 	int sheetsNum;
 	int speed;
@@ -34,6 +35,7 @@ public:
 	void clear();
 	MOVER mover;
 	virtual void update();
-	virtual void setObject(vector2 pos)=0;
+	//virtual void setObject(vector2 pos)=0;
+	virtual void setObject(vector2 pos,int *texture,MOVER mover);
 };
 

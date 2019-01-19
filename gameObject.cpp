@@ -1,33 +1,28 @@
 #include "gameObject.h"
 
-Lanthanum Lanthanums[20];
+Lanthanum Lanthanums[LANTHANUM_MAX];
 
-void Lanthanumfire::setObject(vector2 pos)
+void Lanthanumfire::setObjectTemp(vector2 pos)
 {
 	if (!texture)
 	{
-		this->pos = pos;
-		texture = lanthanum::fireGh;
-		mover = LanthanumMove;//updateより先にこの処理しないとダメ！
+		setObject(pos, &lanthanum::fireGh, LanthanumMove);//updateより先にこの処理しないとダメ！
 		setTextureInfo(15, 10, 0, 0, 100, 100);//画像情報設定しておく
 	}
 }
 
 Lanthanum::Lanthanum() :OBJ2D()
 {
-	
 }
 
-void Lanthanum::setObject(vector2 pos)
+void Lanthanum::setObjectTemp(vector2 pos)
 {
 	if (!texture)
 	{
-		this->pos = pos;
-		texture = lanthanum::lanthanumGh;
-		mover = LanthanumMove;//updateより先にこの処理しないとダメ！
-		setTextureInfo(15, 10, 0, 0, 100, 100);//画像情報設定しておく
+		setObject(pos, &lanthanum::lanthanumGh, LanthanumMove);//moverがnullptrだとエラーでるのでUpdateより前で行う
+		setTextureInfo();//画像情報設定しておく
 	}
-	f.setObject(pos);
+	f.setObjectTemp(pos);
 }
 
 void LanthanumMove(OBJ2D *obj)
@@ -42,7 +37,7 @@ void LanthanumMove(OBJ2D *obj)
 		obj->pos.y++;
 }
 
-//テンプレート化する
+//テンプレート化する?
 void LanthanumsUpdate()
 {
 	for (auto &it : Lanthanums)
@@ -61,27 +56,27 @@ void LanthanumsDraw()
 	}
 }
 
+
 void LanthanumsSetObject()
 {
-	Lanthanums[1].setObject(vector2(100,100));
-	Lanthanums[2].setObject(vector2(200, 200));
-	Lanthanums[3].setObject(vector2(300, 300));
-	Lanthanums[4].setObject(vector2(400, 400));
-	Lanthanums[5].setObject(vector2(500, 500));
-	Lanthanums[6].setObject(vector2(600, 600));
-	Lanthanums[7].setObject(vector2(700, 700));
-	Lanthanums[8].setObject(vector2(700, 700));
-	Lanthanums[9].setObject(vector2(700, 700));
-	Lanthanums[10].setObject(vector2(700, 700));
-	Lanthanums[11].setObject(vector2(700, 700));
-	Lanthanums[12].setObject(vector2(700, 700));
-	Lanthanums[13].setObject(vector2(700, 700));
-	Lanthanums[14].setObject(vector2(700, 700));
-	Lanthanums[15].setObject(vector2(700, 700));
-	Lanthanums[16].setObject(vector2(700, 700));
-	Lanthanums[17].setObject(vector2(700, 700));
-	Lanthanums[18].setObject(vector2(700, 700));
-	Lanthanums[19].setObject(vector2(700, 700));
-	Lanthanums[0].setObject(vector2(700, 700));
-
+	Lanthanums[0].setObjectTemp(vector2(700, 700));
+	Lanthanums[1].setObjectTemp(vector2(100,100));
+	Lanthanums[2].setObjectTemp(vector2(200, 100));
+	Lanthanums[3].setObjectTemp(vector2(300, 100));
+	Lanthanums[4].setObjectTemp(vector2(400, 100));
+	Lanthanums[5].setObjectTemp(vector2(500, 100));
+	Lanthanums[6].setObjectTemp(vector2(600, 100));
+	Lanthanums[7].setObjectTemp(vector2(700, 100));
+	Lanthanums[8].setObjectTemp(vector2(800, 100));
+	Lanthanums[9].setObjectTemp(vector2(900, 100));
+	Lanthanums[10].setObjectTemp(vector2(100, 400));
+	Lanthanums[11].setObjectTemp(vector2(200, 400));
+	Lanthanums[12].setObjectTemp(vector2(300, 400));
+	Lanthanums[13].setObjectTemp(vector2(400, 400));
+	Lanthanums[14].setObjectTemp(vector2(500, 400));
+	Lanthanums[15].setObjectTemp(vector2(550, 400));
+	Lanthanums[16].setObjectTemp(vector2(600, 400));
+	Lanthanums[17].setObjectTemp(vector2(650, 400));
+	Lanthanums[18].setObjectTemp(vector2(700, 400));
+	Lanthanums[19].setObjectTemp(vector2(750, 400));
 }
