@@ -11,10 +11,9 @@ void SceneGame::Update()
 	pl->Update();
 
 	bg->update();
-
+	gameObjectUpdateAll();
 	updateAllTorchLight(bg, pl);
 	getPlTorchPointerTes()->updateLight(bg, pl);
-	LanthanumsUpdate();
 }
 
 void SceneGame::Draw()
@@ -22,7 +21,7 @@ void SceneGame::Draw()
 	//‹P“xÝ’è
 	SetDrawBright(125, 125, 125);
 	bg->draw();
-
+	gameObjectDrawAll();
 	pl->Draw();
 	//‹P“xÝ’è
 	SetDrawBright(255, 255, 255);
@@ -40,16 +39,14 @@ void SceneGame::Draw()
 	getPlTorchPointerTes()->t->updateTorch();
 	getPlTorchPointerTes()->drawLight(pl);
 	updateAllTorchLight(bg, pl);
-	LanthanumsDraw();
 }
 
 SceneGame::SceneGame()
 {
 	pl = new Player();
 	bg = new BGsystem();
-
-	lanthanum::initLanthanum();
-	LanthanumsSetObject();
+	gameObjectSetAll();
+	lanthanum::initLanthanum();;
 	getPlTorchPointerTes()->initLight();
 }
 

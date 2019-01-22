@@ -9,19 +9,20 @@ int torchLight::sum = 0;
 int torch::sumNumber = 0;
 bool torchLight::setFlg = false;
 int lanthanum::fireGh, lanthanum::lanthanumGh, lanthanum::sumNumber = 0;
+static int yColor=0;
 
 //配列で書き直す説
 //t10はプレイヤーの炎
-torch 
-t1(vector2(850, 480)), 
-t2(vector2(1050, 480)), 
-t3(vector2(430, 130)), 
-t4(vector2(30, 330)), 
-t5(vector2(230, 330)), 
-t6(vector2(430, 330)), 
+torch
+t1(vector2(850, 480)),
+t2(vector2(1050, 480)),
+t3(vector2(430, 130)),
+t4(vector2(30, 330)),
+t5(vector2(230, 330)),
+t6(vector2(430, 330)),
 t7(vector2(630, 330)),
-t8(vector2(230, 530)), 
-t9(vector2(430, 530)), 
+t8(vector2(230, 530)),
+t9(vector2(430, 530)),
 t10(vector2(0, 0)), //t10はプレイヤー松明
 t11(vector2(1250, 530)),
 t12(vector2(1450, 530)),
@@ -34,7 +35,7 @@ t18(vector2(2650, 530)),
 t19(vector2(2850, 530)),
 t20(vector2(3050, 530));
 
-torchLight 
+torchLight
 light1(&t1),
 light2(&t2),
 light3(&t3),
@@ -111,9 +112,9 @@ void torch::drawTorchAll()
 		SetDrawBlendMode(DX_BLENDMODE_ADD, 255);//加算
 		//SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);//反転
 		torchAnimCnt++;
-		DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, 100 * (torchAnimCnt / 6 % 10), 0, 100, 100, torch::fireGh, true);
-		DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, 100 * (torchAnimCnt / 6 % 10), 0, 100, 100, torch::fireGh, true);
-		DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, 100 * (torchAnimCnt / 6 % 10), 0, 100, 100, torch::fireGh, true);
+		DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, 100 * (torchAnimCnt / 9 % 10), yColor*100, 100, 100, torch::fireGh, true);
+		DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, 100 * (torchAnimCnt / 9 % 10), yColor * 100, 100, 100, torch::fireGh, true);
+		//DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, 100 * (torchAnimCnt / 9 % 10), yColor * 100, 100, 100, torch::fireGh, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	drawTorch();
@@ -181,6 +182,7 @@ void torchLight::drawLight(BGsystem *bg, Player *pl)
 		t->drawTorchAll();
 		//プレイヤー松明
 		//plTorch.drawLight();
+		gameObjectDrawAll();
 		//プレイヤーランタン
 		plLight.l->drawLanthanumAll();
 		//プレイヤー描画
@@ -251,8 +253,30 @@ void lanthanum::initLanthanum()
 {
 	if (!fireGh)
 	{
-	lanthanum::fireGh = LoadGraph("resource/image/lanthanumfire.png");
-	lanthanum::lanthanumGh = LoadGraph("resource/image/playerlanthanum.png");
+		lanthanum::fireGh = LoadGraph("resource/image/lanthanumfire.png");
+		lanthanum::lanthanumGh = LoadGraph("resource/image/playerlanthanum.png");
+		switch (yourColor)
+		{
+		case 3:
+		case 4:
+			yColor = 0;
+			break;
+		case 1:
+		case 2:
+			yColor = 1;
+			break;
+		case 0:
+			yColor = 2;
+			break;
+		case -1:
+		case -2:
+			yColor = 3;
+			break;
+		case -3:
+		case -4:
+			yColor = 4;
+			break;
+		}
 	}
 }
 
@@ -265,7 +289,7 @@ void lanthanum::drawLanthanum()
 //ランタンの炎まで描画
 void lanthanum::drawLanthanumAll()
 {
-	DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, (lanthanumAnimCnt / 6 % 15) * 100, 0, 100, 100, lanthanum::fireGh, true);
+	DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, (lanthanumAnimCnt / 6 % 15) * 100, yColor * 100, 100, 100, lanthanum::fireGh, true);
 	drawLanthanum();
 }
 

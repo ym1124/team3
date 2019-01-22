@@ -5,6 +5,7 @@
 #include "vector.h"
 #include "YSDBG.h"
 #include "scene.h"
+#include"SceneTitle.h"
 
 
 #define LIGHT_MARGINE_X 60

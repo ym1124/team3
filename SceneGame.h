@@ -3,6 +3,7 @@
 #include "scene.h"
 #include "Player.h"
 #include "YSDBG.h"
+#include "template.h"
 
 class SceneGame : public BaseScene
 {

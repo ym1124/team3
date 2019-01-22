@@ -4,6 +4,8 @@
 
 #include "src\imgui.h"
 #include "src\imgui_impl_dxlib.h"
+#include <wingdi.h>
+#include <windows.h>
 
 LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

@@ -54,7 +54,7 @@ void animator::draw(bool animationFlg)
 	if (!animationFlg)
 	{
 		if (texture!=nullptr)
-			DrawGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, *texture, true);
+			DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, srcX, srcY, sizeX, sizeY, *texture, true);
 	}
 	//画像が入っていれば描画(アニメーション有り)
 	if (animationFlg)
