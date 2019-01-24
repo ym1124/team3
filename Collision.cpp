@@ -15,7 +15,7 @@ int getTerrainAttr(float x, float y)
 	int index = getData(chip_data, x, y);
 
 	// インデックスが-1であればTR_NONEを返す
-	if (index < 0||index>CHIP_DIV_X*CHIP_DIV_Y) return -1;
+	if (index < 0 || index>CHIP_DIV_X*CHIP_DIV_Y) return -1;
 
 	// x方向のインデックス
 	int remX = index % CHIP_DIV_X;
@@ -42,7 +42,7 @@ bool isHitDown(float x, float y)
 	switch (getTerrainAttr(x, y))
 	{
 	case TR_ATTR::TR_NONE:return false;
-	break;
+		break;
 	}
 	return true;
 }
@@ -52,7 +52,7 @@ bool isHitAll(float x, float y)
 	switch (getTerrainAttr(x, y))
 	{
 	case TR_ATTR::TR_NONE:return false;
-	break;
+		break;
 	}
 	return true;
 }
@@ -100,7 +100,7 @@ void mapHoseiDown(BaseObject* obj)
 	static constexpr float ADJUST_Y = 0.125f;
 	float y = obj->getPos(false);                          // わかりやすく書くためいったんyに代入
 	y -= wrap(y, 0.0f, static_cast<float>(CHIP_SIZE));  // 0.0fからCHIP_SIZEまでの間をラップアラウンドさせる
-	obj->setPosY( y - ADJUST_Y);                     // 少し浮かせる
+	obj->setPosY(y - ADJUST_Y);                     // 少し浮かせる
 	obj->setSpeedY((std::min)(obj->getSpeed(false), 0.0f));      // 地面にあたったので速度が止まる
 }
 
@@ -132,4 +132,43 @@ void mapHoseiLeft(BaseObject* obj)
 	x -= wrap(x, -(static_cast<float>(CHIP_SIZE)), 0.0f);
 	obj->setPosX(x + obj->getSize(true) + ADJUST_X);
 	obj->setSpeedX(0.0f);
+}
+
+void mapHoseiDown(OBJ2D* obj)
+{
+	static constexpr float ADJUST_Y = 0.125f;
+	float y = obj->pos.y;                          // わかりやすく書くためいったんyに代入
+	y -= wrap(y, 0.0f, static_cast<float>(CHIP_SIZE));  // 0.0fからCHIP_SIZEまでの間をラップアラウンドさせる
+	obj->pos.y = (y - ADJUST_Y);                     // 少し浮かせる
+	obj->accel.y = (std::min)(obj->accel.y, 0.0f);      // 地面にあたったので速度が止まる
+}
+
+
+void mapHoseiUp(OBJ2D* obj)
+{
+	static constexpr float ADJUST_Y = 0.125f;
+	float y = obj->pos.y - obj->sizeY;
+	y -= wrap(static_cast<int>(obj->sizeY), -32, 0);
+	y += obj->sizeY;
+	if (obj->accel.y < 0)obj->accel.y = (0.0f);
+}
+
+
+void mapHoseiRight(OBJ2D* obj)
+{
+	static constexpr float ADJUST_X = 0.125f;
+	float x = obj->pos.x + obj->sizeX;
+	x -= wrap(x, 0.0f, static_cast<float>(CHIP_SIZE));
+	obj->pos.x = x - obj->sizeX - ADJUST_X;
+	obj->accel.x = 0.0f;
+}
+
+
+void mapHoseiLeft(OBJ2D* obj)
+{
+	static constexpr float ADJUST_X = 0.125f;
+	float x = obj->pos.x - obj->sizeX;
+	x -= wrap(x, -(static_cast<float>(CHIP_SIZE)), 0.0f);
+	obj->pos.x = x + obj->sizeX + ADJUST_X;
+	obj->accel.x = 0.0f;
 }

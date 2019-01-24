@@ -20,7 +20,7 @@ struct INT2
 
 class BaseObject
 {
-protected:
+public:
 	VECTOR2 pos;
 	VECTOR2 delta;
 	VECTOR2 old;

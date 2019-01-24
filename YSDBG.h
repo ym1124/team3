@@ -15,15 +15,13 @@
 #define CHIP_SIZE_Y CHIP_SIZE
 extern vector2 camera_pos;
 extern const vector2 WORLD_SIZE;
+extern int chip_data[CHIP_NUMY][CHIP_NUMX];
 
 class BGsystem
 {
 private:
 
 public:
-
-
-
 	void init();
 	void update();
 	void draw();
@@ -31,12 +29,11 @@ public:
 	void ReleaseChipHandle();
 };
 //extern BGsystem bg;
-//extern float SPEED_MAX_X;
-extern int chip_data[CHIP_NUMY][CHIP_NUMX];
 void DrawModiGraph_Wraped(const vector2 &pos, const vector2 &size, const vector2 &scale, const int &grHandle, const int &TransFlag);
 vector2 Convert_WorldToWindow(vector2 &pos);
 void CameraMove(vector2 plpos);
-
+void SelectStage(int stageNo);//ステージ変更用関数
+extern BGsystem background;//実体
 
 enum TR_ATTR
 {

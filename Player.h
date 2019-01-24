@@ -1,6 +1,7 @@
 #pragma once
 #include "myFunc.h"
 
+extern char controlPL;
 
 class PlBase : public BaseObject
 {
@@ -57,10 +58,12 @@ public:
 };
 
 extern Player player;
+extern char controlPL;
 
 enum PLcon
 {
 	BODY,
 	SOUL,
 	RETURN,
+	BOX,
 };

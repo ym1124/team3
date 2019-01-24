@@ -19,6 +19,8 @@ void InputKey()
 	static int input = 1;//0:キーボード　1:ゲームパッド
 	static char buf[256];
 
+	PAD1 = GetJoypadInputState(DX_INPUT_PAD1);
+
 	switch (input)
 	{
 	case 0:
@@ -68,6 +70,33 @@ void InputKey()
 		else
 		{
 			key[KEY_INPUT_A] = 0;
+		}
+		
+		if (PAD1&(1 << 4))
+		{
+			key[KEY_INPUT_1]++;
+		}
+		else
+		{
+			key[KEY_INPUT_1] = 0;
+		}
+
+		if (PAD1&(1 << 5))
+		{
+			key[KEY_INPUT_2]++;
+		}
+		else
+		{
+			key[KEY_INPUT_2] = 0;
+		}
+
+		if (PAD1&(1 << 6))
+		{
+			key[KEY_INPUT_3]++;
+		}
+		else
+		{
+			key[KEY_INPUT_3] = 0;
 		}
 
 		if (Xinput.Buttons[13] == 1 || Dinput.Buttons[2] == 128)

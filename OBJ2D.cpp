@@ -53,8 +53,8 @@ void animator::draw(bool animationFlg)
 	//画像が入っていれば描画(アニメーション無し)
 	if (!animationFlg)
 	{
-		if (texture!=nullptr)
-			DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, srcX, srcY, sizeX, sizeY, *texture, true);
+		if (texture != nullptr)
+			DrawRectGraph(pos.x - camera_pos.x - sizeX*0.5f, pos.y - camera_pos.y - sizeY, srcX, srcY, sizeX, sizeY, *texture, true);
 	}
 	//画像が入っていれば描画(アニメーション有り)
 	if (animationFlg)
@@ -62,7 +62,7 @@ void animator::draw(bool animationFlg)
 		if (texture != nullptr)
 		{
 			animCnt++;
-			DrawRectGraph(pos.x - camera_pos.x, pos.y - camera_pos.y, srcX + (animCnt / speed%sheetsNum*sizeX), srcY, sizeX, sizeY, *texture, true);
+			DrawRectGraph(pos.x - camera_pos.x - sizeX*0.5f, pos.y - camera_pos.y, srcX + (animCnt / speed%sheetsNum*sizeX) - sizeY, srcY, sizeX, sizeY, *texture, true);
 		}
 	}
 	//画像が入っていなければ停止

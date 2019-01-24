@@ -1,5 +1,6 @@
 #pragma once
 #include "myFunc.h"
+#include "OBJ2D.h"
 
 
 bool isHitDown(float x, float y);
@@ -12,3 +13,7 @@ void mapHoseiUp(BaseObject* obj);
 void mapHoseiRight(BaseObject* obj);
 void mapHoseiLeft(BaseObject* obj);
 
+void mapHoseiDown(OBJ2D* obj);
+void mapHoseiUp(OBJ2D* obj);
+void mapHoseiRight(OBJ2D* obj);
+void mapHoseiLeft(OBJ2D* obj);

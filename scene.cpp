@@ -2,6 +2,7 @@
 #include "common.h"
 #include "scene.h"
 #include "SceneTitle.h"
+#include "SceneTutorial.h"
 #include "SceneGame.h"
 
 
@@ -20,6 +21,9 @@ void sceneManager::changeScene(SCENE scene)
 	{
 	case TITLE:
 		m_pScene = new title();
+		break;
+	case TUTORIAL:
+		m_pScene = new SceneTutorial();
 		break;
 	case SCENE::GAME:
 		m_pScene = new SceneGame();

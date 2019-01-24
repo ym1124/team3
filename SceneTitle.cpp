@@ -4,6 +4,9 @@
 #include "scene.h"
 
 int title::buttonSe;
+int title::triangleGh;
+int circlingFlg = false;
+bool tutorialFlg;
 int yourColor = 0;
 static int sCnt = 0;
 
@@ -23,24 +26,36 @@ void title::Init()
 	playerGh = LoadGraph("resource/image/titlePlayer.png", false);
 	stringGh = LoadGraph("resource/image/titleString.png", false);
 	textWindowGh= LoadGraph("resource/image/textwindow.png", false);
+	triangleGh = LoadGraph("resource/image/triangle.png", false);
 	buttonSe = LoadSoundMem("resource/sound/titleButton.mp3");
 	animCnt = 0;
 	questionState = 0;
+	select = 1;
 	yourColor = 0;
 	speed = 0.5;
 	startFlg = false;
 	soundFlg = false;
-	questionFlg = false;
+	questionFlg = 0;
+	tutorialFlg = true;
 	bPos1 = vector2(0.0f, 0.0f);
 	bPos2 = vector2(1280.f, 0.0f);
 	pPos = vector2(500, 528);
 	lPos = vector2(560, 557);
 	fPos = vector2(558, 573);
+	triPos = vector2(140, 420);
+	//遷移前の情報を保持する必要があるので circlingCntは別で初期化
 }
 
 //更新
 void title::Update()
 {
+	if (circlingFlg)
+	{
+		circlingFlg=false;
+		questionState = 1;
+		pPos.x = 921;
+		startFlg = true;
+	}
 	//BGM再生
 	if (!soundFlg)
 	{
@@ -62,16 +77,27 @@ void title::Update()
 	if (bPos2.x < 0)
 		bPos2.x = 1280;
 	//スタートボタンが押されたら
-	if (key[KEY_INPUT_SPACE] == 1)
+	if (key[KEY_INPUT_SPACE] == 1||key[KEY_INPUT_A]==1)
 		startFlg = true;
 	pushStartButton();
 	question();
+	//チュートリアルの解答用
+	if (key[KEY_INPUT_LEFT] == 1)
+	{
+		select = 1;
+		PlaySoundMem(buttonSe, DX_PLAYTYPE_BACK);
+	}
+	if (key[KEY_INPUT_RIGHT] == 1)
+	{
+		select = 2;
+		PlaySoundMem(buttonSe, DX_PLAYTYPE_BACK);
+	}
 }
 
 //描画
 void title::Draw()
 {
-	if (!questionFlg)
+	if (!questionFlg&&!circlingFlg)
 	{
 		//隠しコマンド(ランタンの炎の色が変わる)
 		static int state;
@@ -100,10 +126,6 @@ void title::Draw()
 		//文字描画
 		DrawGraph(-30, 0, stringGh, true);
 	}
-	else
-	{
-
-	}
 	//輝度再設定
 	//SetDrawBright(142, 142, 142);
 }
@@ -119,8 +141,9 @@ void title::pushStartButton()
 		//シーン遷移条件
 		if (pPos.x > 920)
 		{
-			questionFlg = true;
-			if (questionState == 6)
+			if (!questionFlg)
+				questionFlg = rand()%2+1;
+			if (questionState == 7)
 			{
 				sceneManager::changeScene(sceneManager::GAME);
 				//BGM停止
@@ -153,6 +176,32 @@ void title::question()
 		case 0:
 			ChangeFont("PixelMplus10", DX_CHARSET_DEFAULT);
 			SetFontSize(50);
+			DrawFormatString(220 + x, 350 + y, GetColor(255, 255, 255), "チゆーとリあルが必要デすカ？");
+			if (select == 1)
+				triPos = vector2(262 + x, 465 + y);
+			if (select == 2)
+				triPos = vector2(592 + x, 465 + y);
+			DrawGraph(triPos.x+x, triPos.y+y, triangleGh, true);
+			SetFontSize(30);
+			DrawFormatString(280 + x, 460 + y, GetColor(255, 255, 255), "ウん！");
+			DrawFormatString(610 + x, 460 + y, GetColor(255, 255, 255), "イラなイ！");
+			if (select == 1 &&( key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1))
+			{
+				PlaySoundMem(buttonSe, DX_PLAYTYPE_BACK);
+				tutorialFlg = false;
+				questionState++;
+				circlingFlg=true;
+				sceneManager::changeScene(sceneManager::TUTORIAL);
+			}
+			if (select == 2 && (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1))
+			{
+				PlaySoundMem(buttonSe, DX_PLAYTYPE_BACK);
+				tutorialFlg = false;
+				questionState++;
+			}
+			break;
+		case 1:
+			SetFontSize(50);
 			DrawFormatString(220+x, 350+y, GetColor(255, 255, 255), "こレかラ幾つかノ質問ヲ行いマス");
 			if (key[KEY_INPUT_SPACE] == 1)
 			{
@@ -160,102 +209,222 @@ void title::question()
 				PlaySoundMem(buttonSe, DX_PLAYTYPE_BACK);
 			}
 			break;
-		case 1:
-			SetFontSize(40);
-			DrawFormatString(300+x, 270+y, GetColor(255, 255, 255), "あナタが好きナのハ？");
-			SetFontSize(30);
-			questionSelect("","1.コあら", "2.まウす", "3.あなこんダ");
-			SetFontSize(20);
-			q1 = questionCheckButton();
-			switch (q1)
+		case 2:
+			if (questionFlg == 1)
 			{
-			case 1:
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "あナタが好きナのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.コあら", "B.まウす", "X.ぱんダ");
+				SetFontSize(20);
+				q1 = questionCheckButton();
+				switch (q1)
+				{
+				case 1:
 					questionState++;
 					yourColor--;
-				break;
-			case 2:
-					questionState++;
-				break;
-			case 3:
+					break;
+				case 2:
 					questionState++;
 					yourColor++;
-				break;
+					break;
+				case 3:
+					questionState++;
+					break;
+				default:
+					break;
+				}
 			}
-			break;
-		case 2:
-			SetFontSize(40);
-			DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "アなたガきライなのハ？");
-			SetFontSize(30);
-			questionSelect("", "1.センそう", "2.セかイ", "3.ヤさい");
-			SetFontSize(20);
-			q2 = questionCheckButton();
-			switch (q2)
+			if (questionFlg == 2)
 			{
-			case 1:
-				questionState++;
-				yourColor++;
-				break;
-			case 2:
-				questionState++;
-				break;
-			case 3:
-				questionState++;
-				yourColor--;
-				break;
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "あナタが好きナのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.コばん", "B.ぶどウ", "X.ヒと");
+				SetFontSize(20);
+				q1 = questionCheckButton();
+				switch (q1)
+				{
+				case 1:
+					questionState++;
+					yourColor--;
+					break;
+				case 2:
+					questionState++;
+					yourColor++;
+					break;
+				case 3:
+					questionState++;
+					break;
+				default:
+					break;
+				}
 			}
 			break;
 		case 3:
-			SetFontSize(40);
-			DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "アなタがたベルのハ？");
-			SetFontSize(30);
-			questionSelect("", "1.メだま", "2.あナた", "3.イのち");
-			SetFontSize(20);
-			q3 = questionCheckButton();
-			switch (q3)
+			if (questionFlg == 1)
 			{
-			case 1:
-				questionState++;
-				break;
-			case 2:
-				questionState++;
-				yourColor--;
-				break;
-			case 3:
-				questionState++;
-				yourColor++;
-				break;
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "アなたガきライなのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.センそう", "B.セかイ", "X.ヤさい");
+				SetFontSize(20);
+				q2 = questionCheckButton();
+				switch (q2)
+				{
+				case 1:
+					questionState++;
+					yourColor++;
+					break;
+				case 2:
+					questionState++;
+					break;
+				case 3:
+					questionState++;
+					yourColor--;
+					break;
+				default:
+					break;
+				}
+			}
+			if (questionFlg == 2)
+			{
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "アなたガきライなのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.べんきヨう", "B.ウそ", "X.カみさま");
+				SetFontSize(20);
+				q2 = questionCheckButton();
+				switch (q2)
+				{
+				case 1:
+					questionState++;
+					yourColor--;
+					break;
+				case 2:
+					questionState++;
+					yourColor++;
+					break;
+				case 3:
+					questionState++;
+					break;
+				default:
+					break;
+				}
 			}
 			break;
 		case 4:
-			SetFontSize(40);
-			DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "あナタがホしいのハ？");
-			SetFontSize(30);
-			questionSelect("", "1.ひとデ", "2.クるま", "3.しレん");
-			SetFontSize(20);
-			q4 = questionCheckButton();
-			switch (q4)
+			if (questionFlg == 1)
 			{
-			case 1:
-				questionState++;
-				break;
-			case 2:
-				questionState++;
-				yourColor--;
-				break;
-			case 3:
-				questionState++;
-				yourColor++;
-				break;
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "アなタがたベルのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.メだま", "B.あナた", "X.イのち");
+				SetFontSize(20);
+				q3 = questionCheckButton();
+				switch (q3)
+				{
+				case 1:
+					questionState++;
+					break;
+				case 2:
+					questionState++;
+					yourColor--;
+					break;
+				case 3:
+					questionState++;
+					yourColor++;
+					break;
+				default:
+					break;
+				}
+			}
+			if (questionFlg == 2)
+			{
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "アなタがシンじルのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.ヨげん", "B.ここロ", "X.シんぞう");
+				SetFontSize(20);
+				q3 = questionCheckButton();
+				switch (q3)
+				{
+				case 1:
+					questionState++;
+					yourColor--;
+					break;
+				case 2:
+					questionState++;
+					yourColor++;
+					break;
+				case 3:
+					questionState++;
+					break;
+				default:
+					break;
+				}
 			}
 			break;
 		case 5:
+			if (questionFlg == 1)
+			{
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "あナタがホしいのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.ひとデ", "B.クるま", "X.しレん");
+				SetFontSize(20);
+				q4 = questionCheckButton();
+				switch (q4)
+				{
+				case 1:
+					questionState++;
+					break;
+				case 2:
+					questionState++;
+					yourColor--;
+					break;
+				case 3:
+					questionState++;
+					yourColor++;
+					break;
+				default:
+					break;
+				}
+			}
+			if (questionFlg == 2)
+			{
+				SetFontSize(40);
+				DrawFormatString(300 + x, 270 + y, GetColor(255, 255, 255), "あナタがコわイのハ？");
+				SetFontSize(30);
+				questionSelect("", "A.クらやみ", "B.ネはん", "X.ない");
+				SetFontSize(20);
+				q4 = questionCheckButton();
+				switch (q4)
+				{
+				case 1:
+					questionState++;
+					break;
+				case 2:
+					questionState++;
+					yourColor++;
+					break;
+				case 3:
+					questionState++;
+					yourColor--;
+					break;
+				default:
+					break;
+				}
+			}
+			break;
+		case 6:
 			switch (yourColor)
 			{
 			case 3:
 			case 4:
 				SetFontSize(50);
 				DrawFormatString(200 + x, 360 + y, GetColor(255, 255, 255), "あナタの炎は燃えル様な純粋ナ「あカ」");
-				if (key[KEY_INPUT_SPACE] == 1)
+				if (key[KEY_INPUT_SPACE] == 1|| key[KEY_INPUT_A] == 1)
 				{
 					questionState++;
 					ChangeFont("メイリオ");
@@ -266,7 +435,7 @@ void title::question()
 			case 1:
 				SetFontSize(50);
 				DrawFormatString(210 + x, 360 + y, GetColor(255, 255, 255), "あナタの炎は少シ濁ッた「ヲれんジ」");
-				if (key[KEY_INPUT_SPACE] == 1)
+				if (key[KEY_INPUT_SPACE] == 1||key[KEY_INPUT_A] == 1)
 				{
 					questionState++;
 					ChangeFont("メイリオ");
@@ -276,7 +445,7 @@ void title::question()
 			case 0:
 				SetFontSize(50);
 				DrawFormatString(210 + x, 360 + y, GetColor(255, 255, 255), "あナタの炎は無個性ノ「ミずイロ」");
-				if (key[KEY_INPUT_SPACE] == 1)
+				if (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1)
 				{
 					questionState++;
 					ChangeFont("メイリオ");
@@ -287,7 +456,7 @@ void title::question()
 			case -2:
 				SetFontSize(50);
 				DrawFormatString(220 + x, 360 + y, GetColor(255, 255, 255), "ヲまエの炎は淀んダ「あヲ」");
-				if (key[KEY_INPUT_SPACE] == 1)
+				if (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1)
 				{
 					questionState++;
 					ChangeFont("メイリオ");
@@ -298,7 +467,7 @@ void title::question()
 			case -4:
 				SetFontSize(50);
 				DrawFormatString(210 + x, 360 + y, GetColor(255, 255, 255), "ヲまエの炎は腐ッタ「むラさキ」");//ピンクはヤダ
-				if (key[KEY_INPUT_SPACE] == 1)
+				if (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1)
 				{
 					questionState++;
 					ChangeFont("メイリオ");
@@ -332,7 +501,7 @@ void questionSelect(TCHAR *FormatString1, ...)
 int questionCheckButton()
 {
 	int select = 0;
-	if (key[KEY_INPUT_1] == 1)
+	if (key[KEY_INPUT_1]==1)
 	{
 		select = 1;
 		PlaySoundMem(title::buttonSe, DX_PLAYTYPE_BACK);

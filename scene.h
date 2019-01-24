@@ -31,6 +31,7 @@ public:
 	enum SCENE
 	{
 		TITLE = 0,//タイトルシーン
+		TUTORIAL,
 		GAME,		//ゲームシーン
 		RESULT,
 	};

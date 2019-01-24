@@ -6,6 +6,8 @@
 #include "src\imgui_impl_dxlib.h"
 #include <wingdi.h>
 #include <windows.h>
+#include <stdlib.h>
+#include <time.h>
 
 LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -45,8 +47,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	if (DxLib_Init() == -1) return -1;    // ＤＸライブラリ初期化処理 エラーが起きたら終了
 
-
-
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// メッセージをフックするウインドウプロージャを登録する
@@ -70,6 +70,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//SoundInit();
 	scenemanager.changeScene(scenemanager.TITLE);
 
+	srand((unsigned int)(time(NULL)));
 
 	while (gameexit && ProcessMessage() == 0)
 	{

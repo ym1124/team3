@@ -1,4 +1,5 @@
 #include "gameObject.h"
+#include "Collision.h"
 
 int objGh1;
 Lanthanum Lanthanums[LANTHANUM_MAX];
@@ -35,7 +36,7 @@ void Lanthanum::setObjectTemp(vector2 pos)
 		setObject(pos, &lanthanum::lanthanumGh, noMove);//moverがnullptrだとエラーでるのでUpdateより前で行う
 		setTextureInfo(0,0,0,0,100,100);//画像情報設定しておく
 	}
-	f.setObjectTemp(pos);
+	f.setObjectTemp(vector2(pos.x,pos.y-100));//なぜかずれるのでマジックナンバーで対応
 }
 
 void noMove(OBJ2D *obj)
@@ -89,7 +90,58 @@ void LanthanumsSetObject()
 
 void possessionMove(OBJ2D *obj)
 {
+	static constexpr float SPEED_MAX_Y = 12.0f;
+	static constexpr float GRAVITY = 0.7f;
+	//static constexpr float GROUND_POS = 700.0f;
 
+	obj->accel.y += GRAVITY;
+	if (obj->accel.y >= SPEED_MAX_Y)
+	{
+		obj->accel.y = SPEED_MAX_Y;
+	}
+	obj->old.y = obj->pos.y;
+	obj->pos.y += obj->accel.y;
+	obj->delta.y = obj->old.y - obj->pos.y;
+
+
+	if (obj->delta.y < 0)
+	{
+		if (isFloor(obj->pos.x, obj->pos.y, 15))
+		{
+			mapHoseiDown(obj);
+		}
+	}
+	if (obj->delta.y > 0)
+	{
+		if (isCeiling(obj->pos.x, obj->pos.y - 50, 15))
+		{
+			mapHoseiUp(obj);
+		}
+	}
+
+
+	if (controlPL == PLcon::BOX)
+	{
+		if (!obj->inSoul)return;
+		Player *pl = &player;
+		obj->pos.x = pl->pl_S->getPos(true);
+		obj->pos.y = pl->pl_S->getPos(false);
+	}
+
+	if (obj->delta.x > 0)
+	{
+		if (isWall(obj->pos.x + 15, obj->pos.y, 50))
+		{
+			mapHoseiRight(obj);
+		}
+	}
+	if (obj->delta.x < 0)
+	{
+		if (isWall(obj->pos.x - 15, obj->pos.y, 50))
+		{
+			mapHoseiLeft(obj);
+		}
+	}
 }
 
 //********************木箱*************************************
@@ -170,7 +222,7 @@ void signbordleftSetObject()
 //*********All系************//
 void gameObjectSetAll()
 {
-	loadObjectGraphics();
+	//loadObjectGraphics();
 	signbordleftSetObject();
 	woodenboxSetObject();
 	LanthanumsSetObject();

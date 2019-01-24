@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Collision.h"
 #include "YSDBG.h"
-
+#include "gameObject.h"
 
 #define PL_INIT_X	(100)
 #define PL_INIT_Y	(600)
@@ -47,15 +47,38 @@ void Player::Update()
 			pl_S->soultime = 300;
 			break;
 		case PLcon::SOUL:
-		if (fabs(pl_b->getPos(true) - pl_S->getPos(true) < 50))
-		{
-			if (fabs(pl_b->getPos(false) - pl_S->getPos(false) <50))
+			if (fabs(pl_b->getPos(true) - pl_S->getPos(true)) < 50)
 			{
-				pl_S->Reflg = true;
+				if (fabs(pl_b->getPos(false) - pl_S->getPos(false)) < 50)
+				{
+					pl_S->Reflg = true;
+				}
 			}
-		}
+			for (int i = 0; i < WOODENBOX_MAX; i++)
+			{
+				woodenbox *box = woodenboxs;
+				if (fabs(box[i].pos.x - pl_S->getPos(true)) < 50)
+				{
+					if (fabs(box[i].pos.y - pl_S->getPos(false)) < 50)
+					{
+						controlPL = PLcon::BOX;
+						box[i].inSoul = true;
+						break;
+					}
+				}
+			}
 			break;
-		case 2:
+		case PLcon::RETURN:
+			break;
+		case PLcon::BOX:
+			controlPL = PLcon::SOUL;
+			pl_S->jumpflg = true;
+			pl_S->soultime = 300;
+			for (int i = 0; i < WOODENBOX_MAX; i++)
+			{
+				woodenbox *box = woodenboxs;
+				box[i].inSoul = false;
+			}
 			break;
 		default:
 			break;
@@ -151,7 +174,7 @@ void PlSoul::Update()
 		}
 	}
 
-	if (controlPL == 0)Jump();
+	Jump();
 	CameraMove(vector2(pos.x, pos.y));
 
 	DrawUpdate();

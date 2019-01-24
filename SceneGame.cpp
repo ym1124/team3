@@ -6,6 +6,7 @@
 #include "gameObject.h"
 #include "light.h"
 
+
 void SceneGame::Update()
 {
 	pl->Update();
@@ -19,7 +20,7 @@ void SceneGame::Update()
 void SceneGame::Draw()
 {
 	//‹P“xέ’θ
-	SetDrawBright(125, 125, 125);
+	SetDrawBright(155, 155, 155);
 	bg->draw();
 	gameObjectDrawAll();
 	pl->Draw();
@@ -30,7 +31,7 @@ void SceneGame::Draw()
 	if (b == 0)
 		b = LoadGraph("resource/image/black.png");
 	//155‚ΕγY—ν‚Ι“―‰»‚·‚ι
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 105);
 	DrawGraph(0, 0, b, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -43,17 +44,16 @@ void SceneGame::Draw()
 
 SceneGame::SceneGame()
 {
-	pl = new Player();
-	bg = new BGsystem();
+	pl = &player;
+	bg = &background;
 	gameObjectSetAll();
-	lanthanum::initLanthanum();;
+	lanthanum::initLanthanum();
 	getPlTorchPointerTes()->initLight();
 }
 
 SceneGame::~SceneGame()
 {
-	delete pl;
-	delete bg;
+
 }
 
 void SceneGame::Debug()

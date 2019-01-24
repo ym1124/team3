@@ -190,7 +190,7 @@ void torchLight::drawLight(BGsystem *bg, Player *pl)
 		//オブジェクトのランタン描画
 		Lanthanums[1].draw();
 		//アルファブレンド設定
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 195);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155);
 		//円形画像を描画
 		DrawGraph(t->pos.x - LIGHT_MARGINE_X + sway.x - camera_pos.x, t->pos.y - LIGHT_MARGINE_Y + sway.y - camera_pos.y, torchLight::lightGh, true);
 		//アルファブレンド設定

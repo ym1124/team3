@@ -31,6 +31,10 @@ public:
 class OBJ2D:public animator
 {
 public:
+	vector2 accel;
+	vector2 old;
+	vector2 delta;
+	bool inSoul;
 	OBJ2D();
 	void clear();
 	MOVER mover;
