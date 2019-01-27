@@ -66,4 +66,5 @@ enum PLcon
 	SOUL,
 	RETURN,
 	BOX,
+	BIGLUMP,
 };

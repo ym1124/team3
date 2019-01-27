@@ -8,6 +8,8 @@ const int LANTHANUM_MAX = 20;
 const int WOODENBOX_MAX = 10;
 const int SKELETON_MAX = 5;
 const int SIGNBORDLEFT_MAX = 2;
+const int BIGLANTHANUM_MAX = 5;
+const int IRONBAR_MAX = 5;
 //************ŽÀ‘Ì***************//
 extern int objGh1;
 
@@ -19,7 +21,7 @@ public:
 	void setObjectTemp(vector2 pos);
 };
 
-class Lanthanum:public OBJ2D
+class Lanthanum :public OBJ2D
 {
 public:
 	Lanthanum();
@@ -33,7 +35,7 @@ void noMove(OBJ2D *obj);
 //void LanthanumsDraw();
 void LanthanumsSetObject();
 
-class woodenbox:public OBJ2D
+class woodenbox :public OBJ2D
 {
 public:
 	woodenbox();
@@ -58,9 +60,37 @@ public:
 	signbordleft();
 	void setObjectTemp(vector2 pos);
 };
-extern signbordleft signbordlefts[SIGNBORDLEFT_MAX];        
+extern signbordleft signbordlefts[SIGNBORDLEFT_MAX];
 void signbordleftSetObject();
 
+class bigLanthanum :public OBJ2D
+{
+public:
+	bigLanthanum();
+	void setObjectTemp(vector2 pos);
+};
+extern bigLanthanum bigLanthanums[BIGLANTHANUM_MAX];
+void bigLanthanumSetObject();
+
+class bigLanthanumFire :public OBJ2D
+{
+public:
+	static bool inSoulFlg;
+	bigLanthanumFire();
+	void setObjectTemp(vector2 pos);
+};
+extern bigLanthanumFire bigLanthanumFire1;
+void bigLanthanumFireSetObject();
+void serchInsoulLanthanum(OBJ2D *obj);
+
+class ironbar : public OBJ2D
+{
+public:
+	ironbar();
+	void setObjectTemp(vector2 pos);
+};
+extern ironbar ironbars[IRONBAR_MAX];
+void ironbarSetObject();
 
 //***********AllŒn**************//
 void gameObjectSetAll();

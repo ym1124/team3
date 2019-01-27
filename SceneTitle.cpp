@@ -25,7 +25,7 @@ void title::Init()
 	fireGh = LoadGraph("resource/image/titleFire.png", false);
 	playerGh = LoadGraph("resource/image/titlePlayer.png", false);
 	stringGh = LoadGraph("resource/image/titleString.png", false);
-	textWindowGh= LoadGraph("resource/image/textwindow.png", false);
+	textWindowGh = LoadGraph("resource/image/textwindow.png", false);
 	triangleGh = LoadGraph("resource/image/triangle.png", false);
 	buttonSe = LoadSoundMem("resource/sound/titleButton.mp3");
 	animCnt = 0;
@@ -51,7 +51,7 @@ void title::Update()
 {
 	if (circlingFlg)
 	{
-		circlingFlg=false;
+		circlingFlg = false;
 		questionState = 1;
 		pPos.x = 921;
 		startFlg = true;
@@ -77,7 +77,7 @@ void title::Update()
 	if (bPos2.x < 0)
 		bPos2.x = 1280;
 	//スタートボタンが押されたら
-	if (key[KEY_INPUT_SPACE] == 1||key[KEY_INPUT_A]==1)
+	if (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1)
 		startFlg = true;
 	pushStartButton();
 	question();
@@ -142,7 +142,7 @@ void title::pushStartButton()
 		if (pPos.x > 920)
 		{
 			if (!questionFlg)
-				questionFlg = rand()%2+1;
+				questionFlg = rand() % 2 + 1;
 			if (questionState == 7)
 			{
 				sceneManager::changeScene(sceneManager::GAME);
@@ -170,7 +170,7 @@ void title::question()
 		int q2 = 0;
 		int q3 = 0;
 		int q4 = 0;
-		DrawGraph(-80+(x*-1), 80+(y*-1), textWindowGh, true);
+		DrawGraph((x*-1)+75,(y*-1)+160, textWindowGh, true);
 		switch (questionState)
 		{
 		case 0:
@@ -181,16 +181,16 @@ void title::question()
 				triPos = vector2(262 + x, 465 + y);
 			if (select == 2)
 				triPos = vector2(592 + x, 465 + y);
-			DrawGraph(triPos.x+x, triPos.y+y, triangleGh, true);
+			DrawGraph(triPos.x + x, triPos.y + y, triangleGh, true);
 			SetFontSize(30);
 			DrawFormatString(280 + x, 460 + y, GetColor(255, 255, 255), "ウん！");
 			DrawFormatString(610 + x, 460 + y, GetColor(255, 255, 255), "イラなイ！");
-			if (select == 1 &&( key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1))
+			if (select == 1 && (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1))
 			{
 				PlaySoundMem(buttonSe, DX_PLAYTYPE_BACK);
 				tutorialFlg = false;
 				questionState++;
-				circlingFlg=true;
+				circlingFlg = true;
 				sceneManager::changeScene(sceneManager::TUTORIAL);
 			}
 			if (select == 2 && (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1))
@@ -202,7 +202,7 @@ void title::question()
 			break;
 		case 1:
 			SetFontSize(50);
-			DrawFormatString(220+x, 350+y, GetColor(255, 255, 255), "こレかラ幾つかノ質問ヲ行いマス");
+			DrawFormatString(220 + x, 350 + y, GetColor(255, 255, 255), "こレかラ幾つかノ質問ヲ行いマス");
 			if (key[KEY_INPUT_SPACE] == 1)
 			{
 				questionState++;
@@ -424,7 +424,7 @@ void title::question()
 			case 4:
 				SetFontSize(50);
 				DrawFormatString(200 + x, 360 + y, GetColor(255, 255, 255), "あナタの炎は燃えル様な純粋ナ「あカ」");
-				if (key[KEY_INPUT_SPACE] == 1|| key[KEY_INPUT_A] == 1)
+				if (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1)
 				{
 					questionState++;
 					ChangeFont("メイリオ");
@@ -435,7 +435,7 @@ void title::question()
 			case 1:
 				SetFontSize(50);
 				DrawFormatString(210 + x, 360 + y, GetColor(255, 255, 255), "あナタの炎は少シ濁ッた「ヲれんジ」");
-				if (key[KEY_INPUT_SPACE] == 1||key[KEY_INPUT_A] == 1)
+				if (key[KEY_INPUT_SPACE] == 1 || key[KEY_INPUT_A] == 1)
 				{
 					questionState++;
 					ChangeFont("メイリオ");
@@ -480,20 +480,20 @@ void title::question()
 }
 
 //質問の内容作る
-void questionSelect(TCHAR *FormatString1, ...)
+void questionSelect(char *FormatString1, ...)
 {
 	static int x = rand() % 7 - 3;
 	static int y = rand() % 7 - 3;
 	va_list arg;
 	va_start(arg, FormatString1);
-	for (int cnt = 0; cnt < sizeof(arg)-1; cnt++)
+	for (int cnt = 0; cnt < sizeof(arg) - 1; cnt++)
 	{
 		if (sCnt % 3 == 0)
 		{
 			x = rand() % 7 - 3;
 			y = rand() % 7 - 3;
 		}
-		DrawFormatString(300+x, 50*cnt+350+y, GetColor(255, 255, 255), va_arg(arg, TCHAR*));
+		DrawFormatString(300 + x, 50 * cnt + 350 + y, GetColor(255, 255, 255), va_arg(arg, char*));
 	}
 	va_end(arg);
 }
@@ -501,7 +501,7 @@ void questionSelect(TCHAR *FormatString1, ...)
 int questionCheckButton()
 {
 	int select = 0;
-	if (key[KEY_INPUT_1]==1)
+	if (key[KEY_INPUT_1] == 1)
 	{
 		select = 1;
 		PlaySoundMem(title::buttonSe, DX_PLAYTYPE_BACK);
@@ -537,3 +537,4 @@ void title::Debug()
 {
 	DrawFormatString(0, 0, color.Yellow, "Timer:%d///////////////////////////////////", timer);
 }
+

@@ -10,6 +10,7 @@ void OBJ2D::clear()
 	texture = nullptr;
 	pos = vector2(0, 0);
 	mover = nullptr;
+	inSoul = false;
 	sheetsNum = 0;
 	speed = 0;
 	srcX = 0;
@@ -62,7 +63,7 @@ void animator::draw(bool animationFlg)
 		if (texture != nullptr)
 		{
 			animCnt++;
-			DrawRectGraph(pos.x - camera_pos.x - sizeX*0.5f, pos.y - camera_pos.y, srcX + (animCnt / speed%sheetsNum*sizeX) - sizeY, srcY, sizeX, sizeY, *texture, true);
+			DrawRectGraph(pos.x - camera_pos.x - sizeX*0.5f, pos.y - camera_pos.y - sizeY, srcX + (animCnt / speed%sheetsNum*sizeX), srcY, sizeX, sizeY, *texture, true);
 		}
 	}
 	//‰æ‘œ‚ª“ü‚Á‚Ä‚¢‚È‚¯‚ê‚Î’âŽ~

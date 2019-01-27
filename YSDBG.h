@@ -15,6 +15,7 @@
 #define CHIP_SIZE_Y CHIP_SIZE
 extern vector2 camera_pos;
 extern const vector2 WORLD_SIZE;
+extern const vector2 WINDOW_SIZE;
 extern int chip_data[CHIP_NUMY][CHIP_NUMX];
 
 class BGsystem
@@ -33,6 +34,8 @@ void DrawModiGraph_Wraped(const vector2 &pos, const vector2 &size, const vector2
 vector2 Convert_WorldToWindow(vector2 &pos);
 void CameraMove(vector2 plpos);
 void SelectStage(int stageNo);//ステージ変更用関数
+void Reset_CameraPos_YSD(vector2 resetPos);//引数の位置を中心とする位置にカメラを移動
+
 extern BGsystem background;//実体
 
 enum TR_ATTR
@@ -41,13 +44,15 @@ enum TR_ATTR
 	ALL_BLOCK,      //  0:四方ブロック
 	UPPER_BLOCK,    //  1:上だけブロック
 	HASHIGO,        //  2:はしご
+	PASSSOUL,		//	3:魂だけ通れる
+	SPIKE,			//	4:とげ
 };
 
 const TR_ATTR terrainAttr[CHIP_DIV_Y][CHIP_DIV_X] = {
-	{ TR_ATTR::TR_NONE,   TR_ATTR::ALL_BLOCK,   TR_ATTR::ALL_BLOCK,   TR_ATTR::ALL_BLOCK,   TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, },
-	{ TR_ATTR::UPPER_BLOCK, TR_ATTR::UPPER_BLOCK, TR_ATTR::UPPER_BLOCK, TR_ATTR::UPPER_BLOCK, TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE, },
-	{ TR_ATTR::HASHIGO,     TR_ATTR::HASHIGO,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE, },
-	{ TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE, },
+	{ TR_ATTR::TR_NONE,   TR_ATTR::ALL_BLOCK,   TR_ATTR::ALL_BLOCK,   TR_ATTR::ALL_BLOCK,   TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, },
+	{ TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK,	TR_ATTR::ALL_BLOCK,		TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, },
+	{ TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK,     TR_ATTR::UPPER_BLOCK,     TR_ATTR::PASSSOUL,     TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, },
+	{ TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,     TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE,   TR_ATTR::TR_NONE, TR_ATTR::ALL_BLOCK, TR_ATTR::ALL_BLOCK, },
 };
 
 

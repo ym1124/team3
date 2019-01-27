@@ -4,6 +4,7 @@
 #include "SceneTitle.h"
 #include "SceneTutorial.h"
 #include "SceneGame.h"
+#include "SceneClear.h"
 
 
 BaseScene *sceneManager::m_pScene = nullptr;
@@ -28,8 +29,8 @@ void sceneManager::changeScene(SCENE scene)
 	case SCENE::GAME:
 		m_pScene = new SceneGame();
 		break;
-	case SCENE::RESULT:
-		//m_pScene = new ResultScene();
+	case SCENE::CLEAR:
+		m_pScene = new SceneClear();
 		break;
 	default:
 		break;

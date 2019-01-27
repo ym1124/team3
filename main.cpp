@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+//TODO
+//debugï∂éöè¡Ç∑
+
 LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 

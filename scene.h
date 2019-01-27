@@ -34,6 +34,7 @@ public:
 		TUTORIAL,
 		GAME,		//ƒQ[ƒ€ƒV[ƒ“
 		RESULT,
+		CLEAR
 	};
 
 	sceneManager()

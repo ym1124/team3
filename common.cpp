@@ -71,7 +71,7 @@ void InputKey()
 		{
 			key[KEY_INPUT_A] = 0;
 		}
-		
+
 		if (PAD1&(1 << 4))
 		{
 			key[KEY_INPUT_1]++;
@@ -93,10 +93,39 @@ void InputKey()
 		if (PAD1&(1 << 6))
 		{
 			key[KEY_INPUT_3]++;
+			key[KEY_INPUT_Z]++;
 		}
 		else
 		{
 			key[KEY_INPUT_3] = 0;
+			key[KEY_INPUT_Z] = 0;
+		}
+
+		if (PAD1&(1 << 11))
+		{
+			key[KEY_INPUT_9]++;
+		}
+		else
+		{
+			key[KEY_INPUT_9] = 0;
+		}
+
+		if (PAD1&(1 << 3))
+		{
+			key[KEY_INPUT_UP]++;
+		}
+		else
+		{
+			key[KEY_INPUT_UP] = 0;
+		}
+
+		if (PAD1&(1 << 0))
+		{
+			key[KEY_INPUT_DOWN]++;
+		}
+		else
+		{
+			key[KEY_INPUT_DOWN] = 0;
 		}
 
 		if (Xinput.Buttons[13] == 1 || Dinput.Buttons[2] == 128)

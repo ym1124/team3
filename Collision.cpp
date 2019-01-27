@@ -41,20 +41,48 @@ bool isHitDown(float x, float y)
 {
 	switch (getTerrainAttr(x, y))
 	{
-	case TR_ATTR::TR_NONE:return false;
+	case TR_ATTR::ALL_BLOCK:return true;
+
 		break;
 	}
-	return true;
+	return false;
 }
 
 bool isHitAll(float x, float y)
 {
 	switch (getTerrainAttr(x, y))
 	{
-	case TR_ATTR::TR_NONE:return false;
+	case TR_ATTR::ALL_BLOCK:return true;
+
 		break;
 	}
-	return true;
+	return false;
+}
+
+bool isHitObject(BaseObject *obj1, OBJ2D *obj2)
+{
+	float cross = -((obj2->pos.y - obj2->sizeY) - obj1->getPos(false))*(obj2->pos.x + obj2->sizeX*0.5f);
+	if (obj1->getPos(true) < (obj2->pos.x + obj2->sizeX*0.5f) && obj1->getPos(true) >(obj2->pos.x - obj2->sizeX*0.5f))
+	{
+		if (cross < 0)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool isHitObject(OBJ2D *obj1, OBJ2D *obj2)
+{
+	float cross = -((obj2->pos.y - obj2->sizeY) - obj1->pos.x)*(obj2->pos.x + obj2->sizeX*0.5f);
+	if (obj1->pos.x < (obj2->pos.x + obj2->sizeX*0.5f) && obj1->pos.x >(obj2->pos.x - obj2->sizeX*0.5f))
+	{
+		if (cross < 0)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 //--------------------------------
@@ -91,6 +119,14 @@ bool isWall(float x, float y, float height)
 	return false;
 }
 
+bool isPassWall(float x, float y, float height)
+{
+	for (; height > 0; height -= CHIP_SIZE)
+	{
+		if (getTerrainAttr(x, y) == TR_ATTR::PASSSOUL)return true;
+	}
+	return false;
+}
 
 //--------------------------------
 //  下方向にめり込んでいた場合、y座標を修正する
@@ -171,4 +207,22 @@ void mapHoseiLeft(OBJ2D* obj)
 	x -= wrap(x, -(static_cast<float>(CHIP_SIZE)), 0.0f);
 	obj->pos.x = x + obj->sizeX + ADJUST_X;
 	obj->accel.x = 0.0f;
+}
+
+void objHoseiDown(BaseObject *obj)
+{
+	static constexpr float ADJUST_Y = 0.0125f;
+	float y = obj->getPos(false);                          // わかりやすく書くためいったんyに代入
+	y -= wrap(y, 0.0f, static_cast<float>(16));  // 0.0fからCHIP_SIZEまでの間をラップアラウンドさせる
+	obj->setPosY(y - ADJUST_Y);                     // 少し浮かせる
+	obj->setSpeedY((std::min)(obj->getSpeed(false), 0.0f));      // 地面にあたったので速度が止まる
+}
+
+void objHoseiDown(OBJ2D* obj)
+{
+	static constexpr float ADJUST_Y = 0.0125f;
+	float y = obj->pos.y;                          // わかりやすく書くためいったんyに代入
+	y -= wrap(y, 0.0f, static_cast<float>(48));  // 0.0fからCHIP_SIZEまでの間をラップアラウンドさせる
+	obj->pos.y = (y - ADJUST_Y);                     // 少し浮かせる
+	obj->accel.y = (std::min)(obj->accel.y, 0.0f);      // 地面にあたったので速度が止まる
 }

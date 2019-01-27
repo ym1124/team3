@@ -171,7 +171,7 @@ void torchLight::drawLight(BGsystem *bg, Player *pl)
 	if (isAlive)
 	{
 		//輝度設定
-		SetDrawBright(205, 205, 205);
+		SetDrawBright(195, 195, 195);
 		//描画範囲指定
 		SetDrawArea(t->pos.x - LIGHT_MARGINE_X - camera_pos.x, t->pos.y - LIGHT_MARGINE_Y - camera_pos.y, t->pos.x + 200 - LIGHT_MARGINE_X - camera_pos.x, t->pos.y + 200 - LIGHT_MARGINE_Y - camera_pos.y);
 		//背景画像の描画//後で変える
@@ -190,7 +190,7 @@ void torchLight::drawLight(BGsystem *bg, Player *pl)
 		//オブジェクトのランタン描画
 		Lanthanums[1].draw();
 		//アルファブレンド設定
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 145);
 		//円形画像を描画
 		DrawGraph(t->pos.x - LIGHT_MARGINE_X + sway.x - camera_pos.x, t->pos.y - LIGHT_MARGINE_Y + sway.y - camera_pos.y, torchLight::lightGh, true);
 		//アルファブレンド設定

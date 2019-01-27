@@ -1,13 +1,12 @@
 #include "SceneTutorial.h"
 
-woodenbox box;
-
 SceneTutorial::SceneTutorial()
 {
 	state = 0;
 	select = 1;
 	triPos = vector2(430, 505);
 	deray = 60;
+	pl = &player;
 }
 
 SceneTutorial::~SceneTutorial()
@@ -17,30 +16,31 @@ SceneTutorial::~SceneTutorial()
 void SceneTutorial::Draw()
 {
 	bg.draw();
-	box.draw();
-	pl.Draw();
+	tempGameObjectDraw(woodenboxs, WOODENBOX_MAX, false);
+	pl->Draw();
 	tutorialGuide();
 }
 
 void SceneTutorial::Update()
 {
-	box.update();
-	if (state != 4)
+	tempGameObjectUpdate(woodenboxs, WOODENBOX_MAX);
+	if (state != 8)
 	{
-		pl.Update();
+		pl->Update();
 		bg.update();
 	}
-	if (state== 5)
+	if (state== 9)
 		sceneManager::changeScene(sceneManager::TITLE);
 }
 
 void SceneTutorial::Init()
 {
 	tutorialFlg = false;
-	pl.Init();
+	pl->Init();
 	bg.init();
-	tutorialTextGh = LoadGraph("resource/image/tutorialText.png", false);
-	boxSetObject();
+	tutorialTextGh = LoadGraph("resource/image/tutorial.png", false);
+	loadObjectGraphics();
+	woodenboxSetObject();
 }
 
 void SceneTutorial::unInit()
@@ -60,7 +60,7 @@ void SceneTutorial::tutorialGuide()
 	switch (state)
 	{
 	case 0://ジャンプチェック
-		if (controlPL == BODY && pl.pl_b->onGround && key[KEY_INPUT_SPACE] == 1)
+		if (controlPL == BODY && pl->pl_b->onGround && key[KEY_INPUT_SPACE] == 1)
 		{
 			deray = 100;
 			state++;
@@ -72,9 +72,9 @@ void SceneTutorial::tutorialGuide()
 			state++;
 		break;
 	case 2://幽体化チェック
-		if (controlPL == BODY && key[KEY_INPUT_Z] == 1)
+		if (key[KEY_INPUT_Z] == 1)
 		{
-			deray = 100;
+			deray = 300;
 			state++;
 		}
 		break;
@@ -83,19 +83,33 @@ void SceneTutorial::tutorialGuide()
 		if (deray < 0)
 			state++;
 		break;
-	//case 4://憑依チェック
-	//	if (controlPL==BOX)
-	//	{
-	//		deray = 100;
-	//		state++;
-	//	}
-	//	break;
-	//case 5:
-	//	deray--;
-	//	if (deray < 0)
-	//		state++;
-	//	break;
-	case 4:
+	case 4://憑依チェック
+		if (controlPL==BOX)
+		{
+			deray = 100;
+			state++;
+		}
+		break;
+	case 5:
+		deray--;
+		if (deray < 0)
+			state++;
+		if (key[KEY_INPUT_Z] == 1 && deray >= 0)
+			state+=2;
+		break;
+	case 6://憑依解除チェック
+		if (key[KEY_INPUT_Z] == 1)
+		{
+			state++;
+			deray = 100;
+		}
+		break;
+	case 7:
+		deray--;
+		if (deray < 0)
+			state++;
+		break;
+	case 8:
 		if (key[KEY_INPUT_LEFT] == 1)
 		{
 			select = 1;
@@ -120,11 +134,5 @@ void SceneTutorial::tutorialGuide()
 			state = 0;
 		break;
 	}
-	DrawRectGraph(pl.pl_b->getPos(true) - camera_pos.x, pl.pl_b->getPos(false) - camera_pos.y - 100, 0, (60 * state), 60, 60, tutorialTextGh, true);
-}
-
-void boxSetObject()
-{
-	loadObjectGraphics();
-	box.setObjectTemp(vector2(3 * CHIP_SIZE, 9 * CHIP_SIZE + 16));
+	DrawRectGraph(pl->pl_b->getPos(true) - camera_pos.x-50, pl->pl_b->getPos(false) - camera_pos.y - 150, 0, (100 * state), 150, 100, tutorialTextGh, true);
 }

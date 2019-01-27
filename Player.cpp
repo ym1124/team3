@@ -54,9 +54,11 @@ void Player::Update()
 					pl_S->Reflg = true;
 				}
 			}
+
 			for (int i = 0; i < WOODENBOX_MAX; i++)
 			{
 				woodenbox *box = woodenboxs;
+
 				if (fabs(box[i].pos.x - pl_S->getPos(true)) < 50)
 				{
 					if (fabs(box[i].pos.y - pl_S->getPos(false)) < 50)
@@ -67,6 +69,21 @@ void Player::Update()
 					}
 				}
 			}
+
+			for (int i = 0; i < BIGLANTHANUM_MAX; i++)
+			{
+				bigLanthanum *Blump = bigLanthanums;
+				if (fabs(Blump[i].pos.x - pl_S->getPos(true)) < 70)
+				{
+					if (fabs(Blump[i].pos.y - pl_S->getPos(false)) < 70)
+					{
+						controlPL = PLcon::BIGLUMP;
+						Blump[i].inSoul = true;
+						break;
+					}
+				}
+			}
+
 			break;
 		case PLcon::RETURN:
 			break;
@@ -74,10 +91,22 @@ void Player::Update()
 			controlPL = PLcon::SOUL;
 			pl_S->jumpflg = true;
 			pl_S->soultime = 300;
+			//pl_S->setSpeedY(-0.1f);
 			for (int i = 0; i < WOODENBOX_MAX; i++)
 			{
 				woodenbox *box = woodenboxs;
 				box[i].inSoul = false;
+			}
+			break;
+		case PLcon::BIGLUMP:
+			controlPL = PLcon::SOUL;
+			pl_S->jumpflg = true;
+			pl_S->soultime = 300;
+			pl_S->jumpTimer = 5;
+			for (int i = 0; i < WOODENBOX_MAX; i++)
+			{
+				bigLanthanum *Blump = bigLanthanums;
+				Blump[i].inSoul = false;
 			}
 			break;
 		default:
@@ -94,6 +123,22 @@ void Player::Update()
 void PlBody::Update()
 {
 	Gravity();
+
+	static bool hit[WOODENBOX_MAX] = { false };
+
+	for (int i = 0; i < WOODENBOX_MAX; i++)
+	{
+		if (pos.x < (woodenboxs[i].pos.x + woodenboxs[i].sizeX*0.5f) && pos.x >(woodenboxs[i].pos.x - woodenboxs[i].sizeX*0.5f))
+		{
+			if (hit[i] && !isHitObject(this, &woodenboxs[i]))
+			{
+				objHoseiDown(this);
+				onGround = true;
+				break;
+			}
+		}
+		hit[i] = isHitObject(this, &woodenboxs[i]);
+	}
 
 	if (delta.y < 0)
 	{
@@ -116,14 +161,14 @@ void PlBody::Update()
 
 	if (delta.x > 0)
 	{
-		if (isWall(pos.x + 15, pos.y, 50))
+		if (isWall(pos.x + 15, pos.y, 50) || isPassWall(pos.x + 15, pos.y, 50))
 		{
 			mapHoseiRight(this);
 		}
 	}
 	if (delta.x < 0)
 	{
-		if (isWall(pos.x - 15, pos.y, 50))
+		if (isWall(pos.x - 15, pos.y, 50) || isPassWall(pos.x - 15, pos.y, 50))
 		{
 			mapHoseiLeft(this);
 		}
@@ -137,7 +182,31 @@ void PlBody::Update()
 
 void PlSoul::Update()
 {
-	Gravity();
+	if(controlPL != PLcon::BIGLUMP)Gravity();
+
+	static bool hit[WOODENBOX_MAX] = { false };
+
+	if (key[KEY_INPUT_Z] == 1)
+	{
+		for (int i = 0; i < WOODENBOX_MAX; i++)
+		{
+			hit[i] = false;
+		}
+	}
+
+	for (int i = 0; i < WOODENBOX_MAX; i++)
+	{
+		if (pos.x < (woodenboxs[i].pos.x + woodenboxs[i].sizeX*0.5f) && pos.x >(woodenboxs[i].pos.x - woodenboxs[i].sizeX*0.5f))
+		{
+			if (hit[i] && !isHitObject(this, &woodenboxs[i]))
+			{
+				objHoseiDown(this);
+				onGround = true;
+				break;
+			}
+		}
+		hit[i] = isHitObject(this, &woodenboxs[i]);
+	}
 
 	if (delta.y < 0)
 	{
@@ -157,13 +226,20 @@ void PlSoul::Update()
 	}
 
 
-	Move();
+	if (controlPL != PLcon::BIGLUMP)Move();
 
 	if (delta.x > 0)
 	{
 		if (isWall(pos.x + 15, pos.y, 50))
 		{
 			mapHoseiRight(this);
+		}
+		if (controlPL != PLcon::SOUL)
+		{
+			if (isPassWall(pos.x + 15, pos.y, 50))
+			{
+				mapHoseiRight(this);
+			}
 		}
 	}
 	if (delta.x < 0)
@@ -172,9 +248,16 @@ void PlSoul::Update()
 		{
 			mapHoseiLeft(this);
 		}
+		if (controlPL != PLcon::SOUL)
+		{
+			if (isPassWall(pos.x - 15, pos.y, 50))
+			{
+				mapHoseiLeft(this);
+			}
+		}
 	}
 
-	Jump();
+	if (controlPL != PLcon::BIGLUMP)Jump();
 	CameraMove(vector2(pos.x, pos.y));
 
 	DrawUpdate();

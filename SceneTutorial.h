@@ -16,7 +16,7 @@ public:
 	int tutorialTextGh;
 	vector2 triPos;
 	BGsystem bg;
-	Player pl;
+	Player *pl;
 	SceneTutorial();
 	~SceneTutorial();
 	void Init();
@@ -27,6 +27,3 @@ public:
 
 	void tutorialGuide();
 };
-
-extern woodenbox box;
-void boxSetObject();

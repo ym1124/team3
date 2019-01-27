@@ -51,7 +51,7 @@ void StageData_Copy(int *chipDataArr[], int const* originalData[], vector2 stage
 int chip_data[CHIP_NUMY][CHIP_NUMX];
 
 //以下、当分ステージデータ
-static int stage_data0[CHIP_NUMY][CHIP_NUMX]=
+static int stage_data0[CHIP_NUMY][CHIP_NUMX] =
 {
 	{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
 };
@@ -66,8 +66,8 @@ static int stage_data1[CHIP_NUMY][CHIP_NUMX] =
 	{ 6, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, },
 	{ 6, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, },
 	{ 6, 0, 0, 0, 0, 0, 2, 2, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
-	{ 6, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
-	{ 6, 0, 0, 0, 0, 0, 0, 0, 0, 7,10, 6, 0, 0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+	{ 6, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+	{ 6, 0, 0, 0, 0, 0, 0, 0, 0, 7,10, 6, 0, 0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
 	{ 5, 2, 2, 2, 3, 0, 0, 1, 2, 4,10, 5, 2, 2, 4,10, 5, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, },
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
@@ -281,7 +281,7 @@ void SelectStage(int stageNo)
 }
 
 //第一が入れ物、第二がデータ
-void StageData_Copy(int *chipDataArr[], int const *originalData[],vector2 stageSize)
+void StageData_Copy(int *chipDataArr[], int const *originalData[], vector2 stageSize)
 {
 	//TODO chipData
 	/*配列にマップチップの中身を代入*/
@@ -319,149 +319,11 @@ void BGsystem::ReleaseChipHandle()
 //カメラの移動関数
 void CameraMove(vector2 plpos)
 {
-
 	vector2 wndPos = Convert_WorldToWindow(plpos);
 	const static vector2 SCREEN_MERGIN(SCROLL_MERGIN_X, SCROLL_MERGIN_Y);
 	constexpr static float SPEED_MAX_X = 7.0f;//
 	constexpr static float SPEED_MAX_Y = 12.0f;
 	static vector2 scrollSP(0, 0);
-	//カメラの移動
-#if  0
-
-		//スクロールマージン外に出たときにその分だけカメラを移動
-	if (wndPos.x < 0 + SCREEN_MERGIN.x)
-	{
-		camera_pos.x -= (0 + SCREEN_MERGIN.x) - wndPos.x;
-	}
-	if (WINDOW_SIZE.x - SCREEN_MERGIN.x < wndPos.x)
-	{
-		camera_pos.x += wndPos.x - WINDOW_SIZE.x + SCREEN_MERGIN.x;
-	}
-
-	if (wndPos.y < (0 + SCREEN_MERGIN.y))
-	{
-		camera_pos.y -= (0 + SCREEN_MERGIN.y) - wndPos.y;
-	}
-	if (WINDOW_SIZE.y - SCREEN_MERGIN.y < wndPos.y)
-	{
-		camera_pos.y += wndPos.y - WINDOW_SIZE.y + SCREEN_MERGIN.y;
-	}
-
-#elif 0//ｸｲﾝｸｲﾝする
-
-		//プレイヤーの位置を保持し、スピードを検出、そのスピードの分だけカメラを移動させる。
-
-	const static float SCROLL_SPEED_X = (2.0f);
-	const static float SCROLL_SPEED_Y = 2.0f;
-	const static float SCROLL_ACCEL = 1.0f;
-	static vector2 prev_plpos;//一つ前のフレームのplpos
-	static vector2 plSpeed;
-	plSpeed = vector2(wndPos.x - prev_plpos.x, wndPos.y - prev_plpos.y);
-	static vector2 cam_moveAmount;
-	//スクロールの開始条件
-	//x
-	{
-		if (wndPos.x < 0 + SCREEN_MERGIN.x)
-		{
-			cam_moveAmount.x -= SCROLL_SPEED_X;
-		}
-		else
-		{
-			cam_moveAmount.x++;
-		}
-		if (WINDOW_SIZE.x - SCREEN_MERGIN.x < wndPos.x)
-		{
-			cam_moveAmount.x += SCROLL_SPEED_X;
-		}
-		else
-		{
-			cam_moveAmount.x--;
-		}
-
-		//y
-		if (wndPos.y < (0 + SCREEN_MERGIN.y))
-		{
-			cam_moveAmount.y -= SCROLL_SPEED_Y;
-		}
-		else
-		{
-			cam_moveAmount.y += 0.5f;
-		}
-		if (WINDOW_SIZE.y - SCREEN_MERGIN.y < wndPos.y)
-		{
-			cam_moveAmount.y += SCROLL_SPEED_Y;
-		}
-		else
-		{
-			cam_moveAmount.y -= 0.5f;
-		}
-	}
-	//速度が上限以上にならないようにする場所
-	//if (cam_moveAmount.x)
-	{
-		if (cam_moveAmount.x > SPEED_MAX_X)
-		{
-			cam_moveAmount.x = SPEED_MAX_X;
-		}
-		else if (cam_moveAmount.x < -SPEED_MAX_X)
-		{
-			cam_moveAmount.x = -SPEED_MAX_X;
-		}
-
-		if (cam_moveAmount.y > SPEED_MAX_Y)
-		{
-			cam_moveAmount.y = SPEED_MAX_Y;
-		}
-		else if (cam_moveAmount.y < -SPEED_MAX_Y)
-		{
-			cam_moveAmount.y = -SPEED_MAX_Y;
-		}
-	}
-
-
-	//微速になったときに調節するとこ
-	{
-		//x
-		if (1.0f <= cam_moveAmount.x)
-		{
-			cam_moveAmount.x -= 0.5f;
-			if (cam_moveAmount.x < 0)
-				cam_moveAmount.x = 0.0f;
-		}
-		else if (cam_moveAmount.x <= -1.0f)
-		{
-			cam_moveAmount.x += 0.5f;
-			if (cam_moveAmount.x > 0.0f)
-				cam_moveAmount.x = 0.0f;
-		}
-		if (-1.0f < cam_moveAmount.x && cam_moveAmount.x < 1.0f)
-		{
-			cam_moveAmount.x = 0;
-		}
-		//y
-		if (1.0f <= cam_moveAmount.y)
-		{
-			cam_moveAmount.y -= 0.5f;
-			if (cam_moveAmount.y < 0)
-				cam_moveAmount.y = 0.0f;
-		}
-		else if (cam_moveAmount.y <= -1.0f)
-		{
-			cam_moveAmount.y += 0.5f;
-			if (cam_moveAmount.y > 0.0f)
-				cam_moveAmount.y = 0.0f;
-		}
-		if (-1.0f < cam_moveAmount.y && cam_moveAmount.y < 1.0f)
-		{
-			cam_moveAmount.y = 0;
-		}
-	}
-	camera_pos += cam_moveAmount;
-	prev_plpos = plpos;
-
-#elif 1
-
-//プレイヤーの位置を保持し、スピードを検出、そのスピードの分だけカメラを移動させる。
 
 	const static float SCROLL_SPEED_X = (2.0f);
 	const static float SCROLL_SPEED_Y = 2.0f;
@@ -470,8 +332,15 @@ void CameraMove(vector2 plpos)
 	static vector2 plSpeed;
 	plSpeed = vector2(plpos.x - prev_plpos.x, plpos.y - prev_plpos.y);
 	static vector2 cam_moveAmount;
+	int ScrollState = 0;//0普通　1高速　2高速->減速
+
+	//画面外にいるかどうか
+	if (!(0 < wndPos.x&&wndPos.x < SCREEN_WIDTH && 0 < wndPos.y&&wndPos.y < SCREEN_HEIGHT))
+		ScrollState = 1;
 
 	//スクロールの開始条件
+	//条件画面内
+	if (ScrollState == 0)//外に行ってない(フラグ萎え萎え)
 	{
 		//x
 		if (wndPos.x < 0 + SCREEN_MERGIN.x)
@@ -498,7 +367,7 @@ void CameraMove(vector2 plpos)
 		}
 		else
 		{
-			//cam_moveAmount.y += SCROLL_SPEED_Y;
+			cam_moveAmount.y += SCROLL_SPEED_Y;
 		}
 		if (WINDOW_SIZE.y - SCREEN_MERGIN.y < wndPos.y)
 		{
@@ -506,30 +375,107 @@ void CameraMove(vector2 plpos)
 		}
 		else
 		{
-			//cam_moveAmount.y -= SCROLL_SPEED_Y;
+			cam_moveAmount.y -= SCROLL_SPEED_Y;
 		}
+
+
+		//速度が上限以上にならないようにする場所
+		{
+			//x
+			if (cam_moveAmount.x > SPEED_MAX_X)
+				cam_moveAmount.x = SPEED_MAX_X;
+			else if (cam_moveAmount.x < -SPEED_MAX_X)
+				cam_moveAmount.x = -SPEED_MAX_X;
+			//y
+			if (cam_moveAmount.y > SPEED_MAX_Y)
+				cam_moveAmount.y = SPEED_MAX_Y;
+			else if (cam_moveAmount.y < -SPEED_MAX_Y)
+				cam_moveAmount.y = -SPEED_MAX_Y;
+		}
+
 	}
-	//速度が上限以上にならないようにする場所
+	else if (ScrollState == 1)//外行ってる(フラグビンビン)
 	{
-		if (cam_moveAmount.x > SPEED_MAX_X)
+		//TODO 画面外処理
+		//x
+		if (wndPos.x < 0 + SCREEN_MERGIN.x)
 		{
-			cam_moveAmount.x = SPEED_MAX_X;
+			cam_moveAmount.x -= SCROLL_SPEED_X;
 		}
-		else if (cam_moveAmount.x < -SPEED_MAX_X)
+		else
 		{
-			cam_moveAmount.x = -SPEED_MAX_X;
+			cam_moveAmount.x += SCROLL_SPEED_X;
+		}
+		if (WINDOW_SIZE.x - SCREEN_MERGIN.x < wndPos.x)
+		{
+			cam_moveAmount.x += SCROLL_SPEED_X;
+		}
+		else
+		{
+			cam_moveAmount.x -= SCROLL_SPEED_X;
 		}
 
-		if (cam_moveAmount.y > SPEED_MAX_Y)
+		//y
+		if (wndPos.y < (0 + SCREEN_MERGIN.y))
 		{
-			cam_moveAmount.y = SPEED_MAX_Y;
+			cam_moveAmount.y -= SCROLL_SPEED_Y;
 		}
-		else if (cam_moveAmount.y < -SPEED_MAX_Y)
+		else
 		{
-			cam_moveAmount.y = -SPEED_MAX_Y;
+			cam_moveAmount.y += SCROLL_SPEED_Y;
+		}
+		if (WINDOW_SIZE.y - SCREEN_MERGIN.y < wndPos.y)
+		{
+			cam_moveAmount.y += SCROLL_SPEED_Y;
+		}
+		else
+		{
+			cam_moveAmount.y -= SCROLL_SPEED_Y;
+		}
+
+		//速度が上限以上にならないようにする場所
+		{
+			//x
+			if (cam_moveAmount.x > SPEED_MAX_X * 3)
+				cam_moveAmount.x = SPEED_MAX_X * 3;
+			else if (cam_moveAmount.x < -SPEED_MAX_X * 3)
+				cam_moveAmount.x = -SPEED_MAX_X * 3;
+			//y
+			if (cam_moveAmount.y > SPEED_MAX_Y * 3)
+				cam_moveAmount.y = SPEED_MAX_Y * 3;
+			else if (cam_moveAmount.y < -SPEED_MAX_Y * 3)
+				cam_moveAmount.y = -SPEED_MAX_Y * 3;
+
+			//プレイヤーがウィンドウ付近に接近時//(改変)
+			//if (0 - 200 < wndPos.x&&wndPos.x < SCREEN_WIDTH + 200 && 0 - 150 < wndPos.y&&wndPos.y < SCREEN_HEIGHT - 150)
+			if (std::fabsf(cam_moveAmount.x) >= SPEED_MAX_X * 3 && std::fabsf(cam_moveAmount.y) >= SPEED_MAX_Y * 3)
+				ScrollState = 2;
+
 		}
 	}
+	else if (ScrollState == 2)
+	{
+		cam_moveAmount.x -= 0.1;
+		cam_moveAmount.y -= 0.1;
 
+		if (std::fabsf(cam_moveAmount.x) <= SPEED_MAX_X  && std::fabsf(cam_moveAmount.y) <= SPEED_MAX_Y)
+			ScrollState = 0;
+
+
+		//速度が上限以上にならないようにする場所
+		{
+			//x
+			if (cam_moveAmount.x > SPEED_MAX_X * 5)
+				cam_moveAmount.x = SPEED_MAX_X * 5;
+			else if (cam_moveAmount.x < -SPEED_MAX_X * 5)
+				cam_moveAmount.x = -SPEED_MAX_X * 5;
+			//y
+			if (cam_moveAmount.y > SPEED_MAX_Y * 5)
+				cam_moveAmount.y = SPEED_MAX_Y * 5;
+			else if (cam_moveAmount.y < -SPEED_MAX_Y * 5)
+				cam_moveAmount.y = -SPEED_MAX_Y * 5;
+		}
+	}
 	//微速になったときに調節するとこ
 	{
 		//x
@@ -573,13 +519,8 @@ void CameraMove(vector2 plpos)
 	prev_plpos = plpos;
 	static vector2 prev_cam_moveAmout;
 	prev_cam_moveAmout = cam_moveAmount;
-	
-#elif 1
-	//カメラとプレイヤーの差を計算。プレイヤーが真ん中に来るように加減。
-	//speed, speedMAX, accela, 
-	//画面真ん中
 
-#endif //  0
+
 
 
 
@@ -632,4 +573,8 @@ void DrawModiGraph_Wraped
 		static_cast<int>(posRB.x), static_cast<int>(posRB.y), static_cast<int>(posLB.x), static_cast<int>(posLB.y), grHandle, TransFlag);
 }
 
+void Reset_CameraPos_YSD(vector2 resetPos)
+{
+	camera_pos = vector2(resetPos.x - WINDOW_SIZE.x, resetPos.y - WINDOW_SIZE.y);
+}
 

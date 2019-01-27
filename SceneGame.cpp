@@ -5,16 +5,27 @@
 #include "SceneGame.h"
 #include "gameObject.h"
 #include "light.h"
+#include "YSDPause.h"
 
 
 void SceneGame::Update()
 {
+	if (pause.Get_PauseState()) { pause.Update(); return; }
+	if (key[pauseKey = KEY_INPUT_9] == 1)pause.PauseMode_On();
+
 	pl->Update();
+
+	//CameraMove(vector2(pl->pl_S->getPos(true), pl->pl_S->getPos(false)));
 
 	bg->update();
 	gameObjectUpdateAll();
 	updateAllTorchLight(bg, pl);
 	getPlTorchPointerTes()->updateLight(bg, pl);
+
+	//デバッグ用************************************
+	if (key[KEY_INPUT_C] == 1)
+		sceneManager::changeScene(sceneManager::CLEAR);
+	//********************************************
 }
 
 void SceneGame::Draw()
@@ -40,6 +51,8 @@ void SceneGame::Draw()
 	getPlTorchPointerTes()->t->updateTorch();
 	getPlTorchPointerTes()->drawLight(pl);
 	updateAllTorchLight(bg, pl);
+
+	pause.draw();
 }
 
 SceneGame::SceneGame()
@@ -49,6 +62,7 @@ SceneGame::SceneGame()
 	gameObjectSetAll();
 	lanthanum::initLanthanum();
 	getPlTorchPointerTes()->initLight();
+	loadObjectGraphics();
 }
 
 SceneGame::~SceneGame()
@@ -66,6 +80,8 @@ void SceneGame::Init()
 	bg->init();
 
 	pl->Init();
+
+	pause.Init();
 }
 
 void SceneGame::unInit()
